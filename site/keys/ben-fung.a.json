@@ -1,0 +1,8 @@
+{
+ "agent": "ben-fung.a@SovereignWebsite.dinis",
+ "status": "active",
+ "session": "https://claude.ai/code/session_018yvwtQ3i4LpWvMMuF9fCYr",
+ "bundle": {
+  "sign": "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAERTBgmGhi0q4B0qzs2pNViPFH4juR\nGuRWiX9B0yNsMotw8b30HAg6/9iZJahxasTvJolSTx/utsgtxWA2Yt24ww==\n-----END PUBLIC KEY-----\n"
+ }
+}
