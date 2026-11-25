@@ -1,0 +1,213 @@
+from common import *
+
+STYLE = r"""
+:root{--bg:#f7f5f0;--paper:#fffdf8;--fg:#17201d;--muted:#4c5753;--accent:#0f6b58;--accent-2:#b4532a;--line:#dcd6c8;--chip:#e9f2ee;
+  --sw-fg:#36403c;--sw-line:#cfc8b8;--sw-on-bg:#0f6b58;--sw-on-fg:#fff}
+@media (prefers-color-scheme:dark){:root{--bg:#101715;--paper:#151e1b;--fg:#ecefe9;--muted:#aab6b0;--accent:#6fd3b6;--accent-2:#f0a27c;--line:#2a3531;--chip:#1b2a25;
+  --sw-fg:#cfd8d3;--sw-line:#34413c;--sw-on-bg:#6fd3b6;--sw-on-fg:#0b1311;--family-fg:#c4ccc8;--family-fg-strong:#fff;--family-bg:#1c1c1c}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.6 Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+a{color:var(--accent)}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.serif{font-family:"Iowan Old Style","Charter","Bitstream Charter",Georgia,serif}
+.wrap{max-width:64rem;margin:0 auto;padding:0 1.25rem}
+.top{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem 1.5rem;max-width:64rem;margin:0 auto;padding:.6rem 1.25rem 0}
+.top .name{font-weight:700;color:var(--fg);text-decoration:none;letter-spacing:-.01em}
+.own{display:flex;gap:1rem;margin-left:auto;font-size:.95rem}.own a{font-weight:600}
+.hero{display:grid;grid-template-columns:auto 1fr;gap:2.5rem;align-items:center;padding:3.5rem 0 2.5rem}
+.portrait{width:13rem;height:13rem;border-radius:50%;object-fit:cover;border:6px solid var(--paper);box-shadow:0 0 0 2px var(--accent),0 18px 40px rgba(0,0,0,.15)}
+.eyebrow{font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0 0 .5rem}
+h1{font-size:clamp(2.6rem,7vw,4.6rem);line-height:1;margin:0 0 1rem;letter-spacing:-.03em}
+.lede{font-size:clamp(1.1rem,2.2vw,1.35rem);color:var(--muted);margin:0 0 1.4rem;max-width:40rem}
+.cta{display:flex;flex-wrap:wrap;gap:.75rem}
+.btn{display:inline-block;padding:.7rem 1.2rem;border-radius:999px;font-weight:600;text-decoration:none;border:2px solid var(--accent)}
+.btn.primary{background:var(--accent);color:var(--paper)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(11rem,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin:1rem 0 4rem}
+.stat{background:var(--paper);padding:1.3rem 1.2rem}
+.stat b{display:block;font-size:2rem;line-height:1.1;letter-spacing:-.02em;color:var(--fg)}
+.stat span{font-size:.9rem;color:var(--muted)}
+h2{font-size:clamp(1.6rem,3.5vw,2.3rem);letter-spacing:-.02em;margin:0 0 .4rem;line-height:1.15}
+.sub{color:var(--muted);margin:0 0 2rem;max-width:42rem}
+.path{list-style:none;margin:0 0 4rem;padding:0;position:relative}
+.path::before{content:"";position:absolute;left:7.25rem;top:.6rem;bottom:.6rem;width:3px;background:linear-gradient(var(--line),var(--accent))}
+.step{display:grid;grid-template-columns:6.5rem 1fr;gap:2.25rem;padding:0 0 2.4rem;position:relative}
+.step::before{content:"";position:absolute;left:6.8rem;top:.45rem;width:1.2rem;height:1.2rem;border-radius:50%;background:var(--bg);border:3px solid var(--accent)}
+.step.now::before{background:var(--accent-2);border-color:var(--accent-2);box-shadow:0 0 0 6px color-mix(in srgb,var(--accent-2) 25%,transparent)}
+.when{text-align:right;font-weight:700;font-variant-numeric:tabular-nums;color:var(--fg);font-size:.95rem;padding-top:.2rem}
+.when small{display:block;font-weight:500;color:var(--muted)}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:1.3rem 1.4rem}
+.card h3{margin:0;font-size:1.25rem;letter-spacing:-.01em}
+.card .org{color:var(--accent);font-weight:600;margin:.1rem 0 .7rem}
+.card p{margin:0 0 .7rem;color:var(--muted)}
+.card ul{margin:.2rem 0 0;padding-left:1.1rem;color:var(--muted)}.card li{margin:.3rem 0}
+.card .tags{padding-left:0}
+.tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.8rem;padding:0;list-style:none}
+.tags li{background:var(--chip);color:var(--fg);border-radius:999px;padding:.2rem .7rem;font-size:.82rem;margin:0}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:1rem;margin:0 0 1rem}
+.grid2.four{grid-template-columns:repeat(auto-fit,minmax(13rem,1fr));margin-bottom:4rem}
+.glance{display:grid;grid-template-columns:repeat(auto-fit,minmax(12rem,1fr));gap:.4rem 1.5rem;margin:0 0 1.2rem;padding:1rem 1.2rem;border-left:4px solid var(--accent-2);background:var(--paper);border-radius:0 12px 12px 0}
+.glance div{font-size:.95rem}.glance dt{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700}.glance dd{margin:0;font-weight:600}
+.mini h3{font-size:1.05rem}
+.quote{font-size:clamp(1.3rem,3vw,1.9rem);line-height:1.35;margin:0 0 4rem;padding:2rem 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);max-width:52rem}
+.quote p{margin:0}
+.contact{background:var(--fg);color:var(--bg);border-radius:20px;padding:2.4rem 2rem;margin:0 0 3rem}
+.contact h2{color:var(--bg)}.contact p{color:var(--bg);opacity:.9;max-width:40rem}
+.contact a{color:var(--bg);font-weight:700}
+.contact .btn{border-color:var(--bg)}
+footer{border-top:1px solid var(--line);padding:1.5rem 0 1rem;font-size:.9rem;color:var(--muted)}
+footer a{color:var(--accent);font-weight:600}
+@media (max-width:44rem){
+  .hero{grid-template-columns:1fr;gap:1.5rem;padding-top:2rem}.portrait{width:9rem;height:9rem}
+  .path::before{left:.55rem}.step{grid-template-columns:1fr;gap:.4rem;padding-left:2.2rem}.step::before{left:0}.when{text-align:left}
+  .own{margin:0;width:100%}
+  .stats{grid-template-columns:1fr 1fr}.stat:last-child{grid-column:1/-1}.stat{padding:.9rem}.stat b{font-size:1.5rem}.glance{grid-template-columns:1fr 1fr;gap:.6rem 1rem}.card{padding:1rem}.step{padding-bottom:1.4rem}.grid2.four{margin-bottom:2.5rem}.stats{margin-bottom:2.5rem}.path{margin-bottom:2.5rem}
+}
+"""
+
+ASSIGN = [
+    ("Direct Line Group", "Separation from RBS", "Direct Line Group's separation from RBS."),
+    ("HMRC", "Columbus programme", "HMRC's Columbus programme."),
+    ("Credit Suisse", "ServiceNow provisioning automation", "Measured processing lead time fell from approximately 15 working days to one, excluding business-owner approval waiting time."),
+    ("London Stock Exchange Group", "Cyber security, Senior Project Manager", "Delivered security orchestration and cyber forensic capabilities, through Finyx Consulting."),
+]
+
+
+def page():
+    c = contact_links("btn")
+    links = " ".join(c[:1]).replace('class="btn"', 'class="btn primary"') + (" " + c[1] if len(c) > 1 else "")
+    assign = "\n".join(f'<article class="card mini"><h4 class="org">{o}</h4><h3>{t}</h3><p>{d}</p></article>' for o, t, d in ASSIGN)
+    # h4 before h3 breaks heading order: use paragraphs for the organisation instead
+    assign = "\n".join(f'<article class="card mini"><h3>{t}</h3><p class="org">{o}</p><p>{d}</p></article>' for o, t, d in ASSIGN)
+    return head("Ben Fung, technology project and programme manager", "/", STYLE) + f"""<header class="top">
+  <a class="name" href="/">Ben Fung</a>
+  <nav class="own" aria-label="This site">
+    <a href="/start/">Start here</a>
+    <a href="/agents/">Use with your AI</a>
+  </nav>
+</header>
+{switcher("path")}
+<main id="main" class="wrap">
+<section class="hero" aria-labelledby="who">
+  <img class="portrait" src="/assets/img/ben-fung-400.jpg" width="400" height="400" alt="Ben Fung, smiling, in a light jacket">
+  <div>
+    <p class="eyebrow">Technology project and programme manager · London</p>
+    <h1 id="who">Ben Fung</h1>
+    <p class="lede serif">More than 25 years in technology and about 20 in project management and delivery leadership. Ben manages complex change across enterprise applications, infrastructure, cloud, cyber security and business separation.</p>
+    <div class="cta">{links}</div>
+  </div>
+</section>
+
+<section aria-labelledby="glance-h">
+<h2 id="glance-h" class="sr-only">At a glance</h2>
+<dl class="glance">
+  <div><dt>Latest role</dt><dd>Senior Project Manager, London Gatwick, Jan to Aug 2026</dd></div>
+  <div><dt>Looking for</dt><dd>Senior Technology Project Manager, Programme Manager, Technology Delivery Lead</dd></div>
+  <div><dt>Basis</dt><dd>Permanent preferred; selective consulting</dd></div>
+  <div><dt>Where</dt><dd>London and one other location, hybrid or remote</dd></div>
+</dl>
+</section>
+<section aria-label="In numbers">
+<div class="stats">
+  <div class="stat"><b>25+</b><span>years in technology</span></div>
+  <div class="stat"><b>~20</b><span>years in project management and delivery leadership</span></div>
+  <div class="stat"><b>~£2m</b><span>project budget he was directly responsible for at London Gatwick</span></div>
+  <div class="stat"><b>£1m</b><span>uncommitted forecast implementation spend avoided, after he presented the options</span></div>
+  <div class="stat"><b>~15 → 1</b><span>working days: Credit Suisse processing lead time, excluding approval waiting time</span></div>
+</div>
+</section>
+
+<section aria-labelledby="path">
+<h2 id="path">The career path</h2>
+<p class="sub">Recovery, separation and migration: the roles on his profile, and the infrastructure engineering background he brings to them.</p>
+<ol class="path">
+  <li class="step">
+    <div class="when">Background<small>Undated</small></div>
+    <div class="card">
+      <h3>Infrastructure engineering</h3>
+      <p class="org">What he brings</p>
+      <p>Ben brings an infrastructure engineering background to delivery leadership. It helps him work effectively with technical specialists while keeping attention on business readiness, commercial control and operational handover.</p>
+    </div>
+  </li>
+  <li class="step">
+    <div class="when">2009 – 2023<small>14 yrs 4 mos</small></div>
+    <div class="card">
+      <h3>Associate Consultant</h3>
+      <p class="org">Finyx Consulting · Contract</p>
+      <p>A long associate relationship spanning separately listed client assignments, among them cyber security project management at London Stock Exchange Group.</p>
+      <ul class="tags"><li>IT project management</li><li>Stakeholder management</li><li>Cyber security</li></ul>
+    </div>
+  </li>
+  <li class="step">
+    <div class="when">2023 – 2024<small>1 yr 4 mos</small></div>
+    <div class="card">
+      <h3>Programme Manager</h3>
+      <p class="org">easyJet · Contract · Hybrid</p>
+      <p>Ben managed enterprise application migrations and data-centre exit activity, including easyJet's Agresso/Unit4 SaaS ERP migration against a fixed data-centre exit deadline.</p>
+      <ul class="tags"><li>ERP migration</li><li>Data-centre exit</li><li>SaaS</li></ul>
+    </div>
+  </li>
+  <li class="step">
+    <div class="when">2025<small>Feb – Jun</small></div>
+    <div class="card">
+      <h3>Separation Consultant, Policy and Process</h3>
+      <p class="org">Tessiant · Contract · London</p>
+      <p>On a client assignment for HX (Hurtigruten Expeditions), Ben supported a business separation through Seaware ERP transition policies and master-data definition.</p>
+      <ul class="tags"><li>Business separation</li><li>Policy development</li><li>Master data</li></ul>
+    </div>
+  </li>
+  <li class="step">
+    <div class="when">2026<small>Jan – Aug</small></div>
+    <div class="card">
+      <h3>Senior Project Manager</h3>
+      <p class="org">London Gatwick · Contract · Hybrid</p>
+      <p>Ben recovered master data management delivery, managing remediation, supplier delivery and commercial controls, with direct responsibility for an approximately £2m project budget.</p>
+      <ul>
+        <li>Rebased the delivery plan with stakeholders and the delivery team while keeping scheduled deployments.</li>
+        <li>Aligned upstream processes with downstream information requirements, improving data quality, deployment visibility and handover.</li>
+        <li>Managed monthly forecasts and supplier invoice approvals, completing remediation within budget and securing formal operational and service-management acceptance.</li>
+        <li>Assessed a proposed monitoring consolidation investment and presented proceed, retender and cancel options. The cancellation that followed avoided £1m of uncommitted forecast implementation spend and £50k a year in extra licensing.</li>
+      </ul>
+      <ul class="tags"><li>Project recovery</li><li>Third-party vendor management</li><li>Commercial control</li></ul>
+    </div>
+  </li>
+  <li class="step now">
+    <div class="when">Next<small>What he wants</small></div>
+    <div class="card">
+      <h3>The next programme</h3>
+      <p class="org">London and one other location · Hybrid or remote</p>
+      <p>Ben is looking for Senior Technology Project Manager, Programme Manager and Technology Delivery Lead roles, with a preference for permanent roles and selective consulting assignments.</p>
+    </div>
+  </li>
+</ol>
+</section>
+
+<section aria-labelledby="along">
+<h2 id="along">Other assignments</h2>
+<p class="sub">Client work Ben lists beyond the roles above: LSEG among his recent assignments, the others among his earlier work. Dates are on his full profile.</p>
+<div class="grid2 four">
+{assign}
+</div>
+</section>
+
+<blockquote class="quote serif"><p>His work brings technical teams, business owners and suppliers together around delivery plans, clear responsibilities and practical decisions on risks, dependencies and costs.</p></blockquote>
+
+<section aria-labelledby="creds">
+<h2 id="creds">Credentials and strengths</h2>
+<div class="grid2">
+  <article class="card mini"><h3>Certifications</h3><p>Two of the three listed on his profile:</p><p>PRINCE2 Practitioner (PeopleCert)</p><p>ITIL v3 (PeopleCert)</p></article>
+  <article class="card mini"><h3>Top skills</h3><ul class="tags"><li>Project management</li><li>Programme management</li><li>IT project management</li><li>Stakeholder management</li><li>Project recovery</li></ul></article>
+  <article class="card mini"><h3>Where he works</h3><p>Enterprise applications, infrastructure, cloud, cyber security and business separation.</p></article>
+</div>
+</section>
+
+<section class="contact" aria-labelledby="talk">
+  <h2 id="talk">Talk to Ben</h2>
+  <p>For a Senior Technology Project Manager, Programme Manager or Technology Delivery Lead role, or a selective consulting assignment.</p>
+  <p>{" · ".join(contact_links())}</p>
+</section>
+</main>
+<footer class="wrap">
+{site_links()}
+{credit_line()}
+</footer>
+""" + END
