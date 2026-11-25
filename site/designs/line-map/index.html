@@ -85,6 +85,8 @@ main{max-width:66rem;margin:0 auto;padding:.5rem 1.25rem 2rem}
 .ticket img{width:6rem;height:6rem;border-radius:50%;object-fit:cover;border:4px solid var(--paper)}
 .mailbtn{display:inline-block;margin-top:.5rem;padding:.7rem 1.1rem;border-radius:8px;font-weight:700;text-decoration:none;min-height:44px}
 .ticket .mailbtn{background:var(--paper);color:var(--main)}
+.mast .mailbtn{background:var(--main);color:var(--paper);padding:.45rem .9rem;margin:.3rem 0 0}
+.next-top{font-weight:600;color:var(--fg)!important}
 .ticket h2{margin:0 0 .3rem}.ticket p{margin:0 0 .3rem}
 .ticket a{color:var(--paper);font-weight:700}
 @media (prefers-color-scheme:dark){.ticket{color:#0d0e10}.ticket a{color:#0d0e10}.ticket img{border-color:#0d0e10}}
@@ -111,19 +113,24 @@ footer{max-width:66rem;margin:0 auto;padding:1rem 1.25rem;color:var(--muted);fon
   </ul>
 </details>
 <nav class="designs" aria-label="Five designs of this page">
-  <span class="lead">Five designs:</span>
-  <a href="/"><span class="n">1</span>Career path</a>
-  <a href="/designs/departures/"><span class="n">2</span>Departures board</a>
-  <a href="/designs/programme-plan/"><span class="n">3</span>Programme plan</a>
-  <a href="/designs/line-map/" aria-current="page"><span class="n">4</span>Line map</a>
-  <a href="/designs/broadsheet/"><span class="n">5</span>Broadsheet</a>
-  <a href="/designs/">All five</a>
+<details>
+  <summary><span class="lbl">Five designs</span><span class="here">this is Line map</span></summary>
+  <ul class="dcards">
+    <li><a href="/"><img src="/assets/designs/career-path.jpg" width="640" height="400" alt=""><span>1. Career path</span></a></li>
+    <li><a href="/designs/departures/"><img src="/assets/designs/departures.jpg" width="640" height="400" alt=""><span>2. Departures board</span></a></li>
+    <li><a href="/designs/programme-plan/"><img src="/assets/designs/programme-plan.jpg" width="640" height="400" alt=""><span>3. Programme plan</span></a></li>
+    <li><a href="/designs/line-map/" aria-current="page"><img src="/assets/designs/line-map.jpg" width="640" height="400" alt=""><span>4. Line map</span></a></li>
+    <li><a href="/designs/broadsheet/"><img src="/assets/designs/broadsheet.jpg" width="640" height="400" alt=""><span>5. Broadsheet</span></a></li>
+  </ul>
+  <p class="all"><a href="/designs/">See all five side by side</a></p>
+</details>
 </nav>
 <main id="main">
 <header class="mast">
   <span class="badge" aria-hidden="true">BF</span>
   <div>
     <h1>The Ben Fung Line</h1>
+    <p class="next-top">Next stop: Senior Technology Project Manager, Programme Manager or Technology Delivery Lead. <a class="mailbtn" href="mailto:ben@riskmandate.ai">Email Ben · ben@riskmandate.ai</a></p>
     <p>Technology project and programme manager. 25+ years in technology, about 20 in project management and delivery leadership. Change here for enterprise applications, cloud, cyber security, business separation and project recovery.</p>
   </div>
 </header>

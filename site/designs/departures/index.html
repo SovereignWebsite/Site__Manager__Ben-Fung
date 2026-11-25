@@ -54,6 +54,7 @@ td .role{display:block;text-transform:none;letter-spacing:0;color:var(--dim);fon
 .st{white-space:nowrap;display:inline-block;padding:.15rem .5rem;border-radius:3px;font-weight:700;font-size:.8rem}
 .st.done{color:var(--dim);border:1px solid #4a4e57}
 .st.board-now{background:var(--green);color:#06210f}
+.gate{display:inline-block;margin-top:.4rem;color:var(--amber);font-weight:700;text-transform:none;letter-spacing:0;min-height:24px}
 @media (prefers-reduced-motion:no-preference){.st.board-now{animation:pulse 2.4s ease-in-out infinite}@keyframes pulse{50%{box-shadow:0 0 0 6px rgba(95,224,143,.18)}}}
 tr.next td{background:#22261c}
 .panels{display:grid;grid-template-columns:repeat(auto-fit,minmax(18rem,1fr));gap:1.5rem}
@@ -108,13 +109,17 @@ footer a{color:var(--page-link)}
   </ul>
 </details>
 <nav class="designs" aria-label="Five designs of this page">
-  <span class="lead">Five designs:</span>
-  <a href="/"><span class="n">1</span>Career path</a>
-  <a href="/designs/departures/" aria-current="page"><span class="n">2</span>Departures board</a>
-  <a href="/designs/programme-plan/"><span class="n">3</span>Programme plan</a>
-  <a href="/designs/line-map/"><span class="n">4</span>Line map</a>
-  <a href="/designs/broadsheet/"><span class="n">5</span>Broadsheet</a>
-  <a href="/designs/">All five</a>
+<details>
+  <summary><span class="lbl">Five designs</span><span class="here">this is Departures board</span></summary>
+  <ul class="dcards">
+    <li><a href="/"><img src="/assets/designs/career-path.jpg" width="640" height="400" alt=""><span>1. Career path</span></a></li>
+    <li><a href="/designs/departures/" aria-current="page"><img src="/assets/designs/departures.jpg" width="640" height="400" alt=""><span>2. Departures board</span></a></li>
+    <li><a href="/designs/programme-plan/"><img src="/assets/designs/programme-plan.jpg" width="640" height="400" alt=""><span>3. Programme plan</span></a></li>
+    <li><a href="/designs/line-map/"><img src="/assets/designs/line-map.jpg" width="640" height="400" alt=""><span>4. Line map</span></a></li>
+    <li><a href="/designs/broadsheet/"><img src="/assets/designs/broadsheet.jpg" width="640" height="400" alt=""><span>5. Broadsheet</span></a></li>
+  </ul>
+  <p class="all"><a href="/designs/">See all five side by side</a></p>
+</details>
 </nav>
 <main id="main">
 <section class="board" aria-labelledby="name">
@@ -129,7 +134,7 @@ footer a{color:var(--page-link)}
     <caption>Roles since 2009, newest first</caption>
     <thead><tr><th scope="col">Year</th><th scope="col">Destination</th><th scope="col">Remarks</th></tr></thead>
     <tbody>
-<tr class="next"><td>NEXT</td><td class="dest">Your programme<span class="role">Senior Technology Project Manager · Programme Manager · Technology Delivery Lead · London and one other location · hybrid or remote</span></td><td><span class="st board-now">Next</span></td></tr>
+<tr class="next"><td>NEXT</td><td class="dest">Your programme<span class="role">Senior Technology Project Manager · Programme Manager · Technology Delivery Lead · London and one other location · hybrid or remote</span></td><td><span class="st board-now">Next</span> <a class="gate" href="mailto:ben@riskmandate.ai">Gate: email Ben</a></td></tr>
 <tr><td>2026</td><td class="dest">London Gatwick<span class="role">Senior Project Manager · contract · 8 mos</span></td><td><span class="st done">Within budget</span></td></tr>
 <tr><td>2025</td><td class="dest">Tessiant / HX<span class="role">Separation Consultant, Policy and Process · contract · 5 mos</span></td><td><span class="st done">Contract</span></td></tr>
 <tr><td>2023</td><td class="dest">easyJet<span class="role">Programme Manager · contract · 1 yr 4 mos</span></td><td><span class="st done">Contract</span></td></tr>
