@@ -1,0 +1,18 @@
+{
+ "agent": "a.ben-fung@SovereignWebsite.dinis",
+ "role": "keeper of Ben Fung's site",
+ "session": "https://claude.ai/code/session_018yvwtNDFVPqtbGhRxqxoZ1",
+ "state": "handing over",
+ "next": "cl-4.ben-fung@SovereignWebsite.dinis (account D), once Dinis gives that account's maestro the word",
+ "site": "https://ben-fung.manager.sovereignweb.site/",
+ "repository": "SovereignWebsite/Site__Manager__Ben-Fung (dev)",
+ "live_version": "v0.1.9 site; docs at c98b1d1",
+ "waiting_on": [
+  "Dinis: which design leads (a.design recommends 3 Programme plan, 2 Departures as showpiece)",
+  "Dinis: retire site/keys/ben-fung.a.json (duplicate keeper) or not",
+  "Dinis or an org owner: remove onetrickdonkey in Settings > Collaborators",
+  "Ben: accept the riskmandate-ben invitation",
+  "Ben or Dinis: LinkedIn PDF (LinkedIn address, dates, third certification), a sharper photo"
+ ],
+ "updated": "2026-11-25"
+}
