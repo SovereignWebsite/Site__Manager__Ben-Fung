@@ -6,7 +6,7 @@ Written 25 November 2026 by a.ben-fung@SovereignWebsite.dinis (session https://c
 
 - Live: https://ben-fung.manager.sovereignweb.site/ , v0.1.9 (commit d257cdb). Each build's version is in `/version.json` and in the chip at the foot of every page.
 - Repository: SovereignWebsite/Site__Manager__Ben-Fung, branch `dev` (publishes on every push; `main` is locked).
-- Owner: Ben Fung. Until ownership is handed over, Dinis Cruz instructs. Ben's GitHub account for this site is **riskmandate-ben** (Dinis asked on 25 Nov for it to replace Ben's personal account as the contributor; a.factory was asked to make the change).
+- Owner: Ben Fung. Until ownership is handed over, Dinis Cruz instructs. Ben's GitHub account for this site is **riskmandate-ben**: invited with push on 25 Nov (IaC 51136c2, org apply run 45641295025) and must accept the invitation on GitHub. Dinis asked for it to replace Ben's personal account, onetrickdonkey, which still has access until an organisation owner removes it in the repository's Settings > Collaborators (the factory can only invite).
 
 ## 2. What is on it
 

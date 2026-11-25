@@ -16,7 +16,7 @@ Everything is plain static files in `site/`. No server, no cookies, no tracking.
 ## Step 1. GitHub (5 minutes)
 
 1. Sign in to GitHub as riskmandate-ben.
-2. Accept the repository invitation: open https://github.com/SovereignWebsite/Site__Manager__Ben-Fung and press **View invitation** on the banner (or use the link in the email).
+2. Accept the repository invitation sent to riskmandate-ben: open https://github.com/SovereignWebsite/Site__Manager__Ben-Fung and press **View invitation** on the banner (or use the link in the email).
 3. Accept the organisation invitation at https://github.com/orgs/SovereignWebsite/invitation ("Join SovereignWebsite"). Membership gives you no access to anything else; it lets your own Claude work with your repository.
 4. Check you can see the `dev` branch and the `site/` folder.
 
