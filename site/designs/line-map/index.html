@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ben Fung: line map</title>
+<meta name="description" content="The Ben Fung Line: a technology project and programme manager's career drawn as a transit map, stop by stop.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Ben Fung">
+<meta property="og:locale" content="en_GB">
+<meta property="og:url" content="https://ben-fung.manager.sovereignweb.site/designs/line-map/">
+<meta property="og:title" content="Ben Fung: line map">
+<meta property="og:description" content="The Ben Fung Line: a technology project and programme manager's career drawn as a transit map, stop by stop.">
+<meta property="og:image" content="https://ben-fung.manager.sovereignweb.site/assets/share/card-line-map.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Ben Fung: technology project and programme manager. More than 25 years in technology, about 20 in project management and delivery leadership.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ben Fung: line map">
+<meta name="twitter:description" content="The Ben Fung Line: a technology project and programme manager's career drawn as a transit map, stop by stop.">
+<meta name="twitter:image" content="https://ben-fung.manager.sovereignweb.site/assets/share/card-line-map.jpg">
+<link rel="canonical" href="https://ben-fung.manager.sovereignweb.site/designs/line-map/">
+<link rel="stylesheet" href="/assets/site.css">
+<style>
+:root{--bg:#fbfbfd;--paper:#fff;--fg:#16141f;--muted:#4e4a5c;--main:#5b2d8e;--branch:#b34700;--line:#dcd8e6;
+  --sw-fg:#3b3747;--sw-line:#d3cfe0;--sw-on-bg:#5b2d8e;--sw-on-fg:#fff}
+@media (prefers-color-scheme:dark){:root{--bg:#100e18;--paper:#1a1724;--fg:#f1eef8;--muted:#b7b1c8;--main:#b48cff;--branch:#ffa057;--line:#2f2a3d;
+  --sw-fg:#d9d4e6;--sw-line:#3a3449;--sw-on-bg:#b48cff;--sw-on-fg:#100e18;--family-fg:#cbc6d6;--family-fg-strong:#fff;--family-bg:#1c1c1c}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg) radial-gradient(var(--line) 1px,transparent 1.5px) 0 0/22px 22px;color:var(--fg);font:17px/1.55 "Inter",system-ui,-apple-system,"Segoe UI",sans-serif}
+a{color:var(--main)}
+main{max-width:66rem;margin:0 auto;padding:.5rem 1.25rem 2rem}
+.mast{display:flex;flex-wrap:wrap;align-items:center;gap:1.2rem;padding:1.5rem 0 1rem;border-bottom:6px solid var(--main);margin-bottom:2rem}
+.badge{display:grid;place-items:center;width:4.4rem;height:4.4rem;border-radius:50%;border:9px solid var(--main);background:var(--paper);font-weight:800;font-size:1.05rem;color:var(--fg)}
+.mast h1{margin:0;font-size:clamp(2rem,6vw,3.2rem);letter-spacing:-.02em;line-height:1.05}
+.mast p{margin:.2rem 0 0;color:var(--muted)}
+.key{display:flex;flex-wrap:wrap;gap:1rem 2rem;font-size:.85rem;color:var(--muted);margin:0 0 2rem;padding:.8rem 1rem;background:var(--paper);border:1px solid var(--line);border-radius:8px}
+.key span{display:inline-flex;align-items:center;gap:.5rem}
+.key i{display:inline-block;width:2rem;height:6px;border-radius:3px}
+.key i.m{background:var(--main)}.key i.b{background:var(--branch)}
+.key i.x{width:14px;height:14px;border-radius:50%;border:4px solid var(--fg);background:var(--paper)}
+.line{list-style:none;margin:0;padding:0;position:relative}
+.stop{position:relative;padding:0 0 2.2rem 4.2rem;min-height:3rem}
+.stop::before{content:"";position:absolute;left:1.35rem;top:0;bottom:0;width:12px;background:var(--main)}
+.stop:first-child::before{top:.9rem}
+.stop.end::before{bottom:auto;height:1rem}
+.stop::after{content:"";position:absolute;left:.85rem;top:.2rem;width:1.6rem;height:1.6rem;border-radius:50%;background:var(--paper);border:5px solid var(--fg)}
+.stop.term::after{border-radius:4px;width:1.9rem;left:.7rem;background:var(--main);border-color:var(--main)}
+.zone{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.stop h2{margin:.1rem 0 .1rem;font:800 1.35rem/1.2 "Inter Display",Inter,system-ui,sans-serif;text-transform:uppercase;letter-spacing:.02em}
+.stop .role{margin:0 0 .5rem;font-weight:600;color:var(--main)}
+.stop p{margin:0 0 .5rem;color:var(--muted);max-width:40rem}
+.loophead{font-size:1.45rem;margin:0 0 .3rem}.loopnote{color:var(--muted);margin:0 0 .5rem}
+.branch{list-style:none;margin:.9rem 0 .4rem;padding:.9rem 1rem .4rem;border:1px solid var(--line);border-left:8px solid var(--branch);border-radius:8px;background:var(--paper)}
+.branch li{position:relative;padding:0 0 .7rem 1.6rem}
+.branch li::before{content:"";position:absolute;left:0;top:.35rem;width:.85rem;height:.85rem;border-radius:50%;border:3px solid var(--branch);background:var(--paper)}
+.branch b{display:block}.branch span{color:var(--muted)}
+.branch .title{padding-left:0;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--branch)}
+.branch .title::before{display:none}
+.facts{display:flex;flex-wrap:wrap;gap:.4rem;margin:.4rem 0 0;padding:0;list-style:none}
+.facts li{font-size:.8rem;padding:.15rem .55rem;border:1px solid var(--line);border-radius:4px;background:var(--paper)}
+.map{display:block;width:100%;height:auto;margin:0 0 2rem;background:var(--paper);border:1px solid var(--line);border-radius:12px}
+.map .m{stroke:var(--main)}.map .b{stroke:var(--branch)}.map .st{fill:var(--paper);stroke:var(--fg)}.map .bst{fill:var(--paper);stroke:var(--branch)}
+.map .nm{fill:var(--fg);font:800 15px "Inter Display",Inter,sans-serif;text-transform:uppercase;letter-spacing:.04em}
+.map .zn{fill:var(--muted);font:600 13px Inter,sans-serif;letter-spacing:.08em;text-transform:uppercase}
+.map .bn{fill:var(--fg);font:700 14px Inter,sans-serif}
+.map .lab{font:800 13px Inter,sans-serif;letter-spacing:.14em;text-transform:uppercase}
+@media (max-width:48rem){.map{display:none}.key{display:none}}
+@media (min-width:48.01rem){
+  .key{display:none}
+  .line{align-items:start}
+  .stop::after{display:none}
+  .stop .zone::before{content:"";display:inline-block;width:.7rem;height:.7rem;border-radius:50%;border:3px solid var(--fg);margin-right:.45rem;vertical-align:-1px}
+  .stop.term .zone::before{border-color:var(--paper);border-radius:2px}
+  .line{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2rem}
+  .stop{padding:1.1rem 1.2rem 1rem;background:var(--paper);border:1px solid var(--line);border-top:10px solid var(--main);border-radius:10px;min-height:0}
+  .stop::before{display:none}
+  .stop::after{left:auto;right:1rem;top:-1.05rem;width:1.5rem;height:1.5rem;border-width:5px}
+  .stop.term{background:var(--main);color:var(--paper);border-color:var(--main)}
+  .stop.term h2,.stop.term .role,.stop.term p,.stop.term .zone{color:var(--paper)}
+  .stop.term::after{display:none}
+}
+.ticket{display:flex;flex-wrap:wrap;gap:1.2rem;align-items:center;margin:1rem 0 2rem;padding:1.3rem;border-radius:12px;background:var(--main);color:var(--paper)}
+.ticket img{width:6rem;height:6rem;border-radius:50%;object-fit:cover;border:4px solid var(--paper)}
+.mailbtn{display:inline-block;margin-top:.5rem;padding:.7rem 1.1rem;border-radius:8px;font-weight:700;text-decoration:none;min-height:44px}
+.ticket .mailbtn{background:var(--paper);color:var(--main)}
+.ticket h2{margin:0 0 .3rem}.ticket p{margin:0 0 .3rem}
+.ticket a{color:var(--paper);font-weight:700}
+@media (prefers-color-scheme:dark){.ticket{color:#0d0e10}.ticket a{color:#0d0e10}.ticket img{border-color:#0d0e10}}
+footer{max-width:66rem;margin:0 auto;padding:1rem 1.25rem;color:var(--muted);font-size:.88rem}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<details class="family-credit">
+  <summary>Sovereign Website</summary>
+  <ul>
+    <li><a href="/start/">Start here</a></li>
+    <li><a href="/agents/">Use with your AI</a></li>
+    <li class="family-gap"><a href="/admin/">How this site was made</a></li>
+    <li><a href="https://sovereignwebsite.ai/">Sovereign Website</a></li>
+    <li><a href="https://sovereignwebsite.org/">Principles</a></li>
+    <li><a href="https://sovereignwebsite.site/">Hosted</a></li>
+    <li><a href="https://hub.sovereignweb.site/">Hub</a></li>
+    <li><a href="https://agents.sovereignweb.site/">Agents</a></li>
+    <li><a href="https://vault.sovereignwebsite.site/">Vault</a></li>
+    <li><a href="https://agenticcells.ai/">AgentiCCells</a></li>
+    <li><a href="https://riskmandate.ai/">RiskMandate</a></li>
+    <li><a href="https://newsroom.sgit.ai/">Newsroom</a></li>
+  </ul>
+</details>
+<nav class="designs" aria-label="Five designs of this page">
+  <span class="lead">Five designs:</span>
+  <a href="/"><span class="n">1</span>Career path</a>
+  <a href="/designs/departures/"><span class="n">2</span>Departures board</a>
+  <a href="/designs/programme-plan/"><span class="n">3</span>Programme plan</a>
+  <a href="/designs/line-map/" aria-current="page"><span class="n">4</span>Line map</a>
+  <a href="/designs/broadsheet/"><span class="n">5</span>Broadsheet</a>
+  <a href="/designs/">All five</a>
+</nav>
+<main id="main">
+<header class="mast">
+  <span class="badge" aria-hidden="true">BF</span>
+  <div>
+    <h1>The Ben Fung Line</h1>
+    <p>Technology project and programme manager. 25+ years in technology, about 20 in project management and delivery leadership. Change here for enterprise applications, cloud, cyber security, business separation and project recovery.</p>
+  </div>
+</header>
+
+<svg class="map" viewBox="0 0 1000 270" role="img" aria-labelledby="map-t">
+  <title id="map-t">Diagram of the Ben Fung Line: Background, Finyx Consulting, easyJet, Tessiant for HX, London Gatwick and the next stop, with a separate assignments loop for Direct Line Group, HMRC, Credit Suisse and LSEG. Each stop is described below.</title>
+  <text class="lab" x="40" y="30" fill="currentColor" style="fill:var(--main)">The main line: roles</text>
+  <line class="m" x1="60" y1="95" x2="940" y2="95" stroke-width="12" stroke-linecap="round"/>
+  <g>
+    <circle class="st" cx="60" cy="95" r="12" stroke-width="5"/><text class="nm" x="60" y="70" text-anchor="start">Background</text><text class="zn" x="60" y="130">undated</text>
+    <circle class="st" cx="236" cy="95" r="12" stroke-width="5"/><text class="nm" x="236" y="70" text-anchor="middle">Finyx</text><text class="zn" x="236" y="130" text-anchor="middle">2009 to 2023</text>
+    <circle class="st" cx="412" cy="95" r="12" stroke-width="5"/><text class="nm" x="412" y="70" text-anchor="middle">easyJet</text><text class="zn" x="412" y="130" text-anchor="middle">2023 to 2024</text>
+    <circle class="st" cx="588" cy="95" r="12" stroke-width="5"/><text class="nm" x="588" y="70" text-anchor="middle">Tessiant · HX</text><text class="zn" x="588" y="130" text-anchor="middle">2025</text>
+    <circle class="st" cx="764" cy="95" r="12" stroke-width="5"/><text class="nm" x="764" y="70" text-anchor="middle">Gatwick</text><text class="zn" x="764" y="130" text-anchor="middle">2026</text>
+    <rect x="922" y="77" width="36" height="36" rx="6" style="fill:var(--main)"/><text class="nm" x="958" y="70" text-anchor="end">Next stop</text><text class="zn" x="958" y="130" text-anchor="end">next role</text>
+  </g>
+  <text class="lab" x="140" y="180" style="fill:var(--branch)">The assignments loop: client work, not dated here</text>
+  <path class="b" d="M140 215 H860" stroke-width="8" stroke-linecap="round" fill="none"/>
+  <g>
+    <circle class="bst" cx="200" cy="215" r="9" stroke-width="4"/><text class="bn" x="200" y="248" text-anchor="middle">Direct Line Group</text>
+    <circle class="bst" cx="400" cy="215" r="9" stroke-width="4"/><text class="bn" x="400" y="248" text-anchor="middle">HMRC</text>
+    <circle class="bst" cx="600" cy="215" r="9" stroke-width="4"/><text class="bn" x="600" y="248" text-anchor="middle">Credit Suisse</text>
+    <circle class="bst" cx="800" cy="215" r="9" stroke-width="4"/><text class="bn" x="800" y="248" text-anchor="middle">LSEG (via Finyx)</text>
+  </g>
+</svg>
+
+<div class="key" role="group" aria-label="Map key">
+  <span><i class="m"></i>The main line: his roles</span>
+  <span><i class="b"></i>The assignments loop: client work, off the main line</span>
+  <span><i class="x"></i>A stop</span>
+</div>
+
+<ol class="line">
+  <li class="stop">
+    <p class="zone">Background · undated</p>
+    <h2>Infrastructure Engineering</h2>
+    <p class="role">What he brings to every stop</p>
+    <p>Ben brings an infrastructure engineering background to delivery leadership, which helps him work effectively with technical specialists.</p>
+  </li>
+  <li class="stop">
+    <p class="zone">Zone 1 · March 2009 to June 2023</p>
+    <h2>Finyx Consulting</h2>
+    <p class="role">Associate Consultant · contract · 14 years 4 months</p>
+    <p>An associate relationship spanning separately listed client assignments, including cyber security project management at London Stock Exchange Group.</p>
+  </li>
+  <li class="stop">
+    <p class="zone">Zone 2 · September 2023 to December 2024</p>
+    <h2>easyJet</h2>
+    <p class="role">Programme Manager · contract · hybrid</p>
+    <p>Enterprise application migrations and data-centre exit, including the Agresso/Unit4 SaaS ERP migration against a fixed exit deadline.</p>
+    <ul class="facts"><li>ERP</li><li>SaaS</li><li>Data-centre exit</li></ul>
+  </li>
+  <li class="stop">
+    <p class="zone">Zone 3 · February to June 2025</p>
+    <h2>Tessiant, for HX</h2>
+    <p class="role">Separation Consultant, Policy and Process · contract</p>
+    <p>Client assignment: HX (Hurtigruten Expeditions). Supported business separation through Seaware ERP transition policies and master-data definition.</p>
+    <ul class="facts"><li>Separation</li><li>Policy</li><li>Master data</li></ul>
+  </li>
+  <li class="stop">
+    <p class="zone">Zone 4 · January to August 2026</p>
+    <h2>London Gatwick</h2>
+    <p class="role">Senior Project Manager · contract · hybrid</p>
+    <p>Recovered master data management delivery with direct responsibility for an approximately £2m budget; finished remediation within budget, with formal operational and service-management acceptance. On a monitoring investment he presented proceed, retender and cancel options; the resulting cancellation avoided £1m of uncommitted forecast implementation spend and £50k in additional annual licensing.</p>
+    <ul class="facts"><li>Project recovery</li><li>Vendor management</li><li>Commercial control</li></ul>
+  </li>
+  <li class="stop term end">
+    <p class="zone">Next stop</p>
+    <h2>Your programme</h2>
+    <p class="role">Senior Technology Project Manager · Programme Manager · Technology Delivery Lead</p>
+    <p>Permanent roles preferred, plus selective consulting assignments. London and one other location, hybrid or remote.</p>
+  </li>
+</ol>
+
+<section aria-labelledby="loop">
+<h2 id="loop" class="loophead">The assignments loop</h2>
+<p class="loopnote">Client work Ben lists beyond the roles on the main line. It runs alongside the line rather than on it: only LSEG is tied to a role (Finyx Consulting), and the dates are on his full profile.</p>
+<ul class="branch">
+            <li><b>Direct Line Group</b><span>Earlier work. </span><span>Separation from RBS</span></li>
+      <li><b>HMRC</b><span>Earlier work. </span><span>The Columbus programme</span></li>
+      <li><b>Credit Suisse</b><span>Earlier work. </span><span>ServiceNow provisioning automation: processing lead time from approximately 15 working days to one, excluding business-owner approval waiting time</span></li>
+      <li><b>London Stock Exchange Group</b><span>A recent assignment, through Finyx Consulting. Cyber security Senior Project Manager: security orchestration and cyber forensic capabilities</span></li>
+    </ul>
+</section>
+
+<section class="ticket" aria-labelledby="travel">
+  <img src="/assets/img/ben-fung-400.jpg" width="400" height="400" alt="Ben Fung">
+  <div>
+    <h2 id="travel">Travel information</h2>
+    <p>PRINCE2 Practitioner and ITIL v3 (PeopleCert).</p>
+    <p><a class="mailbtn" href="mailto:ben@riskmandate.ai">Email Ben · ben@riskmandate.ai</a></p>
+  </div>
+</section>
+</main>
+<footer>
+<nav class="site-links" aria-label="About this site">
+  <a href="/start/">Start here</a>
+  <a href="/agents/">Use with your AI</a>
+  <a href="/admin/">How this site was made</a>
+  <a href="/policy/">How this site is governed</a>
+  <a href="/progress/">How this site grew</a>
+</nav>
+A sovereign website, made with the <a href="https://sovereignwebsite.org/">open pattern</a>. Source: <a href="https://github.com/SovereignWebsite/Site__Manager__Ben-Fung">github.com/SovereignWebsite/Site__Manager__Ben-Fung</a>.
+</footer>
+</body>
+</html>

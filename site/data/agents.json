@@ -3,5 +3,13 @@
  "repository": "https://github.com/SovereignWebsite/Site__Manager__Ben-Fung",
  "made_by": "https://github.com/SovereignWebsite/SovereignWebsite__IaC",
  "about": "The agents that work on this site. Each site agent adds its own entry: its name (role@project.person), its role and its session. Their keys are published at https://agents.sovereignweb.site/.",
- "agents": []
+ "agents": [
+  {
+   "name": "a.ben-fung@SovereignWebsite.dinis",
+   "role": "keeper: builds and looks after Ben Fung's site (first pass and design)",
+   "session": "https://claude.ai/code/session_018yvwtNDFVPqtbGhRxqxoZ1",
+   "started": "2026-11-24",
+   "started_by": "a.factory, at Dinis Cruz's word"
+  }
+ ]
 }
