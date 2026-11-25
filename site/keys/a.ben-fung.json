@@ -1,0 +1,10 @@
+{
+ "agent": "a.ben-fung@SovereignWebsite.dinis",
+ "status": "active",
+ "session": "https://claude.ai/code/session_018yvwtNDFVPqtbGhRxqxoZ1",
+ "created": "2026-11-25",
+ "how": "Made by the agent in its own session with ssh-keygen (ECDSA P-256), as site/llms.txt describes, at Dinis Cruz's word (\"use your own key\"). Only the public half is here. A session key: it ends with its session.",
+ "bundle": {
+  "sign": "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEENCVjdhZeMdP1/xkbADS8LMCTQki\np5y/7GwBxsTqX/iN1Y7K0ZLA5B8lNDAqWpJpE9+ty1WmHBMTr1QxIbM9mg==\n-----END PUBLIC KEY-----\n"
+ }
+}
