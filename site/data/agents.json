@@ -10,6 +10,13 @@
    "session": "https://claude.ai/code/session_018yvwtNDFVPqtbGhRxqxoZ1",
    "started": "2026-11-24",
    "started_by": "a.factory, at Dinis Cruz's word"
+  },
+  {
+   "name": "keeper.ben@SovereignWebsite.ben",
+   "role": "keeper: looks after Ben Fung's site for Ben, from his own Claude account",
+   "session": "https://claude.ai/code/session_01XiRqA7GkCvTzmF6fUWvn6b",
+   "started": "2026-11-26",
+   "started_by": "Ben Fung, the owner"
   }
  ]
 }
