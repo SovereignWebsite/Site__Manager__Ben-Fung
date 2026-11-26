@@ -1,6 +1,6 @@
 HOST = "https://ben-fung.manager.sovereignweb.site"
 EMAIL = "ben@riskmandate.ai"
-LINKEDIN = None  # waiting for Dinis: take it from the LinkedIn PDF, never guess
+LINKEDIN = "https://www.linkedin.com/in/ben-fung-8935936/"  # given by Ben Fung in keeper.ben's session, 26 Nov 2026
 REPO = "https://github.com/SovereignWebsite/Site__Manager__Ben-Fung"
 DESC = "Ben Fung leads technology change across aviation, financial services and government: enterprise migrations, business separation, cybersecurity delivery and operational resilience."
 
@@ -109,4 +109,7 @@ END = "</body>\n</html>\n"
 
 
 def mail_button(cls="mailbtn"):
-    return f'<a class="{cls}" href="mailto:{EMAIL}">Email Ben · {EMAIL}</a>'
+    out = f'<a class="{cls}" href="mailto:{EMAIL}">Email Ben · {EMAIL}</a>'
+    if LINKEDIN:
+        out += f' <a class="{cls}" href="{LINKEDIN}">LinkedIn profile</a>'
+    return out
