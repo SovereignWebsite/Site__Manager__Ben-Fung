@@ -8,7 +8,7 @@ You need about 30 minutes the first time. After that, a change is one message to
 
 - The site: https://ben-fung.manager.sovereignweb.site/
 - The repository: https://github.com/SovereignWebsite/Site__Manager__Ben-Fung (your GitHub account for this site is riskmandate-ben, invited with push access)
-- Five designs of the same career story: `/` (Career path), `/designs/departures/`, `/designs/programme-plan/`, `/designs/line-map/`, `/designs/broadsheet/`, and the gallery at `/designs/`.
+- Four designs of the same career story: `/` (Career path, the home page), `/designs/departures/`, `/designs/programme-plan/`, `/designs/line-map/`, and the gallery at `/designs/`. Broadsheet was retired on 26 Nov 2026. All four draw their facts from `docs/generator/facts.py`.
 - The rules every agent follows: `CLAUDE.md` and `site/policy/abp.json` (explained in plain English at `/policy/`).
 
 Everything is plain static files in `site/`. No server, no cookies, no tracking. The `dev` branch is what gets published; `main` is locked.
@@ -98,8 +98,8 @@ Simulated users never replace real people: send the link to two or three people 
 
 ## Everyday changes
 
-- **Small text change, no agent:** on GitHub open `site/`, pick the page (the five designs are `site/index.html` and `site/designs/*/index.html`), press the pencil, edit, and **Commit changes** to `dev`. It is live in a minute or two.
-- **Anything bigger:** one message to your agent, for example "Add a section on my PRINCE2 and ITIL certifications to all five designs" or "Make the departures board the home page".
+- **Small text change, no agent:** on GitHub open `site/`, pick the page (the four designs are `site/index.html` and `site/designs/*/index.html`), press the pencil, edit, and **Commit changes** to `dev`. It is live in a minute or two.
+- **Anything bigger:** one message to your agent, for example "Add a section on my PRINCE2 and ITIL certifications to all four designs" or "Make the departures board the home page".
 - **Something looks wrong on the live site:** open an issue at https://github.com/SovereignWebsite/Site__Manager__Ben-Fung/issues/new and tell your agent to read it.
 
 Every version is tagged (v0.1.0, v0.1.1, ...) and shown in the small chip at the foot of each page, so any change can be traced and undone.
@@ -111,7 +111,7 @@ The files, the history and the address are in a repository you control. You can 
 ## Open items from the first pass
 
 - Your LinkedIn address: not in the screenshots, so it is not on the site yet.
-- Which of the five designs leads (the design reviewer recommends the programme plan).
+- Which design leads: Career path for now (Ben, 26 Nov 2026); the design reviewer recommended the programme plan.
 - A higher-resolution photo.
 - Dates for the earlier client assignments.
 - The third certification ("Show all 3 licenses"): only PRINCE2 Practitioner and ITIL v3 were visible.

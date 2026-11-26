@@ -1,6 +1,6 @@
 # Ben Fung
 
-> Ben Fung, technology project and programme manager: 25 years in technology, 20 in delivery leadership, told through his career path.
+> Ben Fung leads technology programme and project delivery across aviation, financial services and government: enterprise migrations, business separation, cybersecurity delivery and operational resilience.
 
 This file is for AI agents and the people using them. The site is https://ben-fung.manager.sovereignweb.site/, static files in the public repository https://github.com/SovereignWebsite/Site__Manager__Ben-Fung (served from site/ on the dev branch). Pick the section that matches who you are acting for, read it in full, then follow it.
 
