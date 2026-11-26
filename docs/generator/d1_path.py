@@ -62,23 +62,158 @@ footer a{color:var(--accent);font-weight:600}
   .own{margin:0;width:100%}
   .stats{grid-template-columns:1fr 1fr}.stat:last-child{grid-column:1/-1}.stat{padding:.9rem}.stat b{font-size:1.5rem}.glance{grid-template-columns:1fr 1fr;gap:.6rem 1rem}.card{padding:1rem}.step{padding-bottom:1.4rem}.grid2.four{margin-bottom:2.5rem}.stats{margin-bottom:2.5rem}.path{margin-bottom:2.5rem}
 }
+.outcomes{display:grid;grid-template-columns:repeat(auto-fit,minmax(18rem,1fr));gap:1rem;margin:0 0 4rem;padding:0;list-style:none}
+.outcome{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:1.3rem 1.4rem;display:flex;flex-direction:column}
+.outcome .kind{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-2);font-weight:700;margin:0}
+.outcome .big{font-size:1.75rem;line-height:1.15;letter-spacing:-.02em;font-weight:700;margin:.35rem 0 .5rem;color:var(--fg)}
+.outcome p{margin:0 0 .6rem;color:var(--muted)}
+.outcome .where{margin-top:auto;padding-top:.6rem;border-top:1px solid var(--line);font-size:.9rem;color:var(--fg)}
+.outcome .team{font-size:.9rem;font-style:italic}
+.caps{display:grid;grid-template-columns:repeat(auto-fit,minmax(14rem,1fr));gap:1rem;margin:0 0 4rem}
+.caps h3{font-size:1rem;margin:0 0 .3rem}
+.arr{display:inline-block;font-size:.78rem;font-weight:600;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:.05rem .6rem;margin-left:.3rem;vertical-align:.1em;white-space:nowrap}
+.phase{margin:0 0 2.5rem}
+.phase h3{font-size:1.3rem;margin:0 0 .2rem}
+.phase .sub{margin-bottom:1rem}
+.rows{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.rows li{display:grid;grid-template-columns:11rem 1fr;gap:.2rem 1.5rem;padding:.8rem 0;border-bottom:1px solid var(--line)}
+.rows .d{font-variant-numeric:tabular-nums;font-weight:600;font-size:.95rem}
+.rows .r{font-weight:600}.rows .o{color:var(--accent);font-weight:600}
+.rows p{margin:.15rem 0 0;color:var(--muted);font-size:.95rem}
+.note{background:var(--paper);border-left:4px solid var(--accent-2);border-radius:0 12px 12px 0;padding:1rem 1.2rem;margin:0 0 2.5rem;color:var(--muted)}
+.note strong{color:var(--fg)}
+.inprog{color:var(--accent-2);font-weight:700}
+@media (max-width:44rem){.rows li{grid-template-columns:1fr}.outcomes,.caps{margin-bottom:2.5rem}.outcome .big{font-size:1.45rem}}
 """
 
-ASSIGN = [
-    ("Direct Line Group", "Separation from RBS", "Direct Line Group's separation from RBS."),
-    ("HMRC", "Columbus programme", "HMRC's Columbus programme."),
-    ("Credit Suisse", "ServiceNow provisioning automation", "Measured processing lead time fell from approximately 15 working days to one, excluding business-owner approval waiting time."),
-    ("London Stock Exchange Group", "Cyber security, Senior Project Manager", "Delivered security orchestration and cyber forensic capabilities, through Finyx Consulting."),
+MON = "Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec".split()
+
+
+def when(s, e):
+    sy, sm = s.split("-"); ey, em = e.split("-")
+    a, b = MON[int(sm) - 1], MON[int(em) - 1]
+    return f"{a} to {b} {sy}" if sy == ey else f"{a} {sy} to {b} {ey}"
+
+
+ARR = {"consultancy": "Consultancy", "contract": "Contract", "other": "Associate", "unknown": None}
+
+
+def arr(a):
+    return f'<span class="arr">{ARR[a]}</span>' if ARR[a] else ""
+
+
+# Every line below is taken from Ben's Public Professional Profile v1.0 (career facts), wording kept close.
+RECENT = [
+    ("Gatwick Airport", "Senior Project Manager", "2026-01", "2026-08", "consultancy",
+     "Led master data quality remediation through formal service-management acceptance and assessed options for consolidating monitoring tools.",
+     ["Completed master data remediation within budget and secured formal operational acceptance.",
+      "Managed monthly cost forecasts, supplier invoice approvals and supplier handover.",
+      "Presented monitoring consolidation options and recommended against proceeding with the proposal as scoped.",
+      "Improved visibility of upcoming deployments so teams could plan resources earlier."]),
+    ("HX / Hurtigruten Expeditions", "Separation Consultant", "2025-02", "2025-06", "consultancy",
+     "Defined transition policies and facilitated master-data workshops for the Seaware ERP transition.",
+     ["Defined master-data structure and transition policies for the Seaware ERP separation.",
+      "Facilitated master-data workshops across business categories and presented transition risks to board stakeholders."]),
+    ("easyJet", "Programme Manager", "2023-09", "2024-12", "consultancy",
+     "Led the Agresso/Unit4 ERP migration to SaaS and coordinated application migrations supporting the data-centre exit.",
+     ["Matrix-managed five project managers and coordinated dependencies, risks and reporting across assigned projects.",
+      "Led integration testing, cutover and stabilisation for the Unit4 ERP move to SaaS.",
+      "Completed the ERP migration and required integrations by the fixed data-centre exit deadline, with no components deferred.",
+      "Across applications under his accountability, migrations had no unplanned outages.",
+      "Obtained business-lead sign-off that training had been delivered to impacted teams."]),
+    ("London Stock Exchange Group", "Cyber Security Senior Project Manager", "2022-05", "2023-05", "consultancy",
+     "Led delivery of D3 security orchestration and automation, coordinated tooling integrations and established an in-house cyber forensics capability.",
+     ["Delivered the D3 security orchestration and automation implementation to schedule and budget.",
+      "Coordinated integration of monitoring, service management and endpoint security tools.",
+      "Established an in-house cyber forensics capability."]),
 ]
+
+PHASES = [
+    ("2018 to 2022", "Security, procurement and resilience consulting",
+     "Short consultancy engagements across government, policing and financial services. Some ran at the same time; the dates are as given.",
+     [("Defra", "Technology Infrastructure Consultant", "2022-01", "2022-02", "consultancy", "Assessed infrastructure resilience and documented recommendations following an external audit."),
+      ("HMRC", "Security operating model consulting<small> (a description of the work, not a job title)</small>", "2021-01", "2021-03", "consultancy", "Coordinated the definition and stakeholder review of cybersecurity services. The definitions were still in review when the engagement ended."),
+      ("Metropolitan Police Service", "Senior Consultant", "2020-04", "2020-11", "consultancy", "Supported procurement for an integration-platform upgrade: requirements and supplier workshops, evaluation scoring, training evaluators."),
+      ("National Crime Agency", "Senior Consultant / Procurement", "2020-02", "2020-05", "consultancy", "Developed a standard framework for lower-value technology procurement."),
+      ("M&amp;G", "Operational Resilience Senior Consultant", "2019-08", "2020-01", "consultancy", "Helped assess infrastructure resilience across the prioritised pipeline for separation from Prudential."),
+      ("Metropolitan Police Service", "Senior Consultant / Procurement", "2019-05", "2019-08", "consultancy", "Managed requirements and supplier evaluation for the Command &amp; Control procurement."),
+      ("National Crime Agency", "Senior Consultant", "2019-01", "2019-04", "consultancy", "Supported competitive procurement for a strategic technology partner: requirements, supplier scoring models, bidder clarifications."),
+      ("HMRC / Home Office", "Senior Consultant", "2018-01", "2018-10", "consultancy", "Helped develop the security target operating model, service catalogue and process handoffs.")]),
+    ("2009 to 2016", "Programme and project management",
+     "Separation, migration, automation and portfolio work in financial services and government.",
+     [("HMRC", "IT Solution Programme Manager", "2015-10", "2016-10", "consultancy", "Managed the integrated application, data and user migration plan for his assigned delivery within the Columbus programme."),
+      ("Credit Suisse", "Portfolio Optimisation &amp; ServiceNow Programme Manager", "2014-03", "2015-09", "consultancy", "Led ServiceNow provisioning automation and developed a weighted scoring framework for portfolio prioritisation."),
+      ("Direct Line Group", "Separation Project Manager, Applications", "2011-11", "2013-12", "consultancy", "Managed Direct Line Group&#8217;s side of the separation from RBS, covering mainframe systems and migration of applications and websites."),
+      ("Nomura", "Fixed Income Project Manager", "2010-02", "2011-06", "consultancy", "Managed fixed-income technology delivery."),
+      ("Coller Capital", "Technology Outsourcing Programme Consultant", "2009-04", "2009-11", "consultancy", "Advised on technology outsourcing.")]),
+    ("1997 to 2009", "From infrastructure engineering to project leadership",
+     "Server and infrastructure engineering, then technical and project leadership.",
+     [("MF Global", "Technical Lead, Enterprise Security Management Project (CyberArk)", "2008-04", "2009-03", "contract", "Provided technical leadership for a CyberArk enterprise security management project."),
+      ("MF Global", "Project Lead, Virtualisation Project (VMware)", "2007-06", "2008-05", "contract", "Led VMware virtualisation and server decommissioning, including hands-on engineering. The project decommissioned more than 200 servers."),
+      ("WPP", "Group ERP Technical Solution Consultant", "2006-11", "2007-04", "contract", "Provided technical consulting for group ERP."),
+      ("Man Financial", "Wintel Infrastructure Engineer", "2003-05", "2006-10", "contract", "Worked in Windows infrastructure engineering."),
+      ("Australian Stock Exchange", "Information Technology Infrastructure Engineer", "2000-11", "2003-02", "unknown", "Worked in IT infrastructure engineering."),
+      ("Westpac", "Server Support Engineer", "1997-03", "2000-10", "unknown", "Supported server infrastructure.")]),
+]
+
+OUTCOMES = [
+    ("Deadline delivery", "No components deferred",
+     "Completed the Unit4 ERP migration to SaaS and its required integrations by the fixed data-centre exit deadline. Across the applications under his accountability, migrations had no unplanned outages.",
+     "The wider data-centre exit programme decommissioned approximately 150 servers.",
+     "easyJet · Programme Manager · 2023 to 2024"),
+    ("Commercial control", "Within budget, formally accepted",
+     "Completed master data quality remediation within budget and secured formal operational acceptance, managing monthly cost forecasts and supplier invoice approvals.",
+     None, "Gatwick Airport · Senior Project Manager · 2026"),
+    ("Cyber security", "To schedule and budget",
+     "Delivered the D3 security orchestration and automation implementation, coordinated the tooling integrations and established an in-house cyber forensics capability.",
+     None, "London Stock Exchange Group · 2022 to 2023"),
+    ("Go-live quality", "Zero priority-one defects",
+     "Met the deadline for his assigned migration delivery in the Columbus programme, with zero priority-one defects at go-live and through stabilisation.",
+     None, "HMRC · IT Solution Programme Manager · 2015 to 2016"),
+    ("Automation", "About 15 working days to one",
+     "Led ServiceNow automation that reduced measured virtual-server provisioning processing time from approximately 15 working days to one. The comparison excluded time waiting for manual business-owner approval.",
+     None, "Credit Suisse · 2014 to 2015"),
+    ("Procurement", "Scoring a major procurement",
+     "Built the scoring calculations, trained the evaluators and consolidated evaluation scores for the 2019 Command &amp; Control procurement, after managing the requirements and bidder clarifications.",
+     None, "Metropolitan Police Service · 2019"),
+]
+
+CAPS = [
+    ("Delivery and governance", ["Programme and project delivery", "Senior stakeholder governance", "Risk, issue and dependency management", "Matrix team leadership", "Agile and hybrid delivery", "Project recovery"]),
+    ("Migration and implementation", ["Cloud and data-centre migration", "Enterprise SaaS implementation", "Data migration and integration coordination", "Testing, cutover and stabilisation"]),
+    ("Commercial and procurement", ["Commercial and budget management", "Supplier and contract management", "Procurement and vendor evaluation"]),
+    ("Security and separation", ["Security and target operating model design", "Business separation and transition", "Infrastructure engineering and virtualisation (earlier career)"]),
+]
+
+
+def tags(xs):
+    return '<ul class="tags">' + "".join(f"<li>{x}</li>" for x in xs) + "</ul>"
 
 
 def page():
     c = contact_links("btn")
     links = " ".join(c[:1]).replace('class="btn"', 'class="btn primary"') + (" " + c[1] if len(c) > 1 else "")
-    assign = "\n".join(f'<article class="card mini"><h4 class="org">{o}</h4><h3>{t}</h3><p>{d}</p></article>' for o, t, d in ASSIGN)
-    # h4 before h3 breaks heading order: use paragraphs for the organisation instead
-    assign = "\n".join(f'<article class="card mini"><h3>{t}</h3><p class="org">{o}</p><p>{d}</p></article>' for o, t, d in ASSIGN)
-    return head("Ben Fung, technology project and programme manager", "/", STYLE) + f"""<header class="top">
+    outcomes = "\n".join(
+        f'<li class="outcome"><p class="kind">{k}</p><p class="big">{b}</p><p>{t}</p>'
+        + (f'<p class="team">{team}</p>' if team else "") + f'<p class="where">{w}</p></li>'
+        for k, b, t, team, w in OUTCOMES)
+    caps = "\n".join(f'<div class="card mini"><h3>{h}</h3>{tags(xs)}</div>' for h, xs in CAPS)
+    recent = []
+    for i, (o, r, s, e, a, scope, hl) in enumerate(RECENT):
+        recent.append(f"""  <li class="step{' now' if i == 0 else ''}">
+    <div class="when">{when(s, e)}</div>
+    <div class="card">
+      <h3>{r}</h3>
+      <p class="org">{o} {arr(a)}</p>
+      <p>{scope}</p>
+      <ul>{''.join(f'<li>{h}</li>' for h in hl)}</ul>
+    </div>
+  </li>""")
+    phases = []
+    for span, title, intro, rows in PHASES:
+        rr = "\n".join(f'<li><span class="d">{when(s, e)}</span><div><span class="r">{r}</span>, <span class="o">{o}</span> {arr(a)}<p>{d}</p></div></li>' for o, r, s, e, a, d in rows)
+        phases.append(f'<section class="phase"><h3>{span}: {title}</h3><p class="sub">{intro}</p><ol class="rows">\n{rr}\n</ol></section>')
+    return head("Ben Fung, technology programme and project delivery", "/", STYLE) + f"""<header class="top">
   <a class="name" href="/">Ben Fung</a>
   <nav class="own" aria-label="This site">
     <a href="/start/">Start here</a>
@@ -88,121 +223,58 @@ def page():
 {switcher("path")}
 <main id="main" class="wrap">
 <section class="hero" aria-labelledby="who">
-  <img class="portrait" src="/assets/img/ben-fung-400.jpg" width="400" height="400" alt="Ben Fung, smiling, in a light jacket">
+  <img class="portrait" src="/assets/img/ben-fung-400.jpg" srcset="/assets/img/ben-fung-400.jpg 400w, /assets/img/ben-fung-800.jpg 800w" sizes="13rem" width="400" height="400" alt="Ben Fung, smiling, in a dark jacket and striped shirt">
   <div>
-    <p class="eyebrow">Technology project and programme manager · London</p>
+    <p class="eyebrow">Technology programme and project delivery</p>
     <h1 id="who">Ben Fung</h1>
-    <p class="lede serif">More than 25 years in technology and about 20 in project management and delivery leadership. Ben manages complex change across enterprise applications, infrastructure, cloud, cyber security and business separation.</p>
+    <p class="lede serif">Ben Fung leads technology change across aviation, financial services and government. His work covers enterprise migrations, business separation, cybersecurity delivery and operational resilience, building on an earlier career in infrastructure engineering.</p>
     <div class="cta">{links}</div>
   </div>
 </section>
 
-<section aria-labelledby="glance-h">
-<h2 id="glance-h" class="sr-only">At a glance</h2>
-<dl class="glance">
-  <div><dt>Latest role</dt><dd>Senior Project Manager, London Gatwick, Jan to Aug 2026</dd></div>
-  <div><dt>Looking for</dt><dd>Senior Technology Project Manager, Programme Manager, Technology Delivery Lead</dd></div>
-  <div><dt>Basis</dt><dd>Permanent preferred; selective consulting</dd></div>
-  <div><dt>Where</dt><dd>London and one other location, hybrid or remote</dd></div>
-</dl>
-</section>
-<section aria-label="In numbers">
-<div class="stats">
-  <div class="stat"><b>25+</b><span>years in technology</span></div>
-  <div class="stat"><b>~20</b><span>years in project management and delivery leadership</span></div>
-  <div class="stat"><b>~£2m</b><span>project budget he was directly responsible for at London Gatwick</span></div>
-  <div class="stat"><b>£1m</b><span>uncommitted forecast implementation spend avoided, after he presented the options</span></div>
-  <div class="stat"><b>~15 → 1</b><span>working days: Credit Suisse processing lead time, excluding approval waiting time</span></div>
+<section aria-labelledby="does">
+<h2 id="does">What he does</h2>
+<p class="sub">The capabilities he brings to a programme, grouped.</p>
+<div class="caps">
+{caps}
 </div>
 </section>
 
-<section aria-labelledby="path">
-<h2 id="path">The career path</h2>
-<p class="sub">Recovery, separation and migration: the roles on his profile, and the infrastructure engineering background he brings to them.</p>
+<section aria-labelledby="out">
+<h2 id="out">Selected outcomes</h2>
+<p class="sub">Six results, each showing a different strength. Each figure belongs to the project named beneath it; where a result was the wider programme&#8217;s rather than his, it says so.</p>
+<ul class="outcomes">
+{outcomes}
+</ul>
+</section>
+
+<section aria-labelledby="recent">
+<h2 id="recent">Recent roles</h2>
+<p class="sub">His four most recent engagements, newest first. All were consultancy engagements with the client named.</p>
 <ol class="path">
-  <li class="step">
-    <div class="when">Background<small>Undated</small></div>
-    <div class="card">
-      <h3>Infrastructure engineering</h3>
-      <p class="org">What he brings</p>
-      <p>Ben brings an infrastructure engineering background to delivery leadership. It helps him work effectively with technical specialists while keeping attention on business readiness, commercial control and operational handover.</p>
-    </div>
-  </li>
-  <li class="step">
-    <div class="when">2009 – 2023<small>14 yrs 4 mos</small></div>
-    <div class="card">
-      <h3>Associate Consultant</h3>
-      <p class="org">Finyx Consulting · Contract</p>
-      <p>A long associate relationship spanning separately listed client assignments, among them cyber security project management at London Stock Exchange Group.</p>
-      <ul class="tags"><li>IT project management</li><li>Stakeholder management</li><li>Cyber security</li></ul>
-    </div>
-  </li>
-  <li class="step">
-    <div class="when">2023 – 2024<small>1 yr 4 mos</small></div>
-    <div class="card">
-      <h3>Programme Manager</h3>
-      <p class="org">easyJet · Contract · Hybrid</p>
-      <p>Ben managed enterprise application migrations and data-centre exit activity, including easyJet's Agresso/Unit4 SaaS ERP migration against a fixed data-centre exit deadline.</p>
-      <ul class="tags"><li>ERP migration</li><li>Data-centre exit</li><li>SaaS</li></ul>
-    </div>
-  </li>
-  <li class="step">
-    <div class="when">2025<small>Feb – Jun</small></div>
-    <div class="card">
-      <h3>Separation Consultant, Policy and Process</h3>
-      <p class="org">Tessiant · Contract · London</p>
-      <p>On a client assignment for HX (Hurtigruten Expeditions), Ben supported a business separation through Seaware ERP transition policies and master-data definition.</p>
-      <ul class="tags"><li>Business separation</li><li>Policy development</li><li>Master data</li></ul>
-    </div>
-  </li>
-  <li class="step">
-    <div class="when">2026<small>Jan – Aug</small></div>
-    <div class="card">
-      <h3>Senior Project Manager</h3>
-      <p class="org">London Gatwick · Contract · Hybrid</p>
-      <p>Ben recovered master data management delivery, managing remediation, supplier delivery and commercial controls, with direct responsibility for an approximately £2m project budget.</p>
-      <ul>
-        <li>Rebased the delivery plan with stakeholders and the delivery team while keeping scheduled deployments.</li>
-        <li>Aligned upstream processes with downstream information requirements, improving data quality, deployment visibility and handover.</li>
-        <li>Managed monthly forecasts and supplier invoice approvals, completing remediation within budget and securing formal operational and service-management acceptance.</li>
-        <li>Assessed a proposed monitoring consolidation investment and presented proceed, retender and cancel options. The cancellation that followed avoided £1m of uncommitted forecast implementation spend and £50k a year in extra licensing.</li>
-      </ul>
-      <ul class="tags"><li>Project recovery</li><li>Third-party vendor management</li><li>Commercial control</li></ul>
-    </div>
-  </li>
-  <li class="step now">
-    <div class="when">Next<small>What he wants</small></div>
-    <div class="card">
-      <h3>The next programme</h3>
-      <p class="org">London and one other location · Hybrid or remote</p>
-      <p>Ben is looking for Senior Technology Project Manager, Programme Manager and Technology Delivery Lead roles, with a preference for permanent roles and selective consulting assignments.</p>
-    </div>
-  </li>
+{chr(10).join(recent)}
 </ol>
 </section>
 
-<section aria-labelledby="along">
-<h2 id="along">Other assignments</h2>
-<p class="sub">Client work Ben lists beyond the roles above: LSEG among his recent assignments, the others among his earlier work. Dates are on his full profile.</p>
-<div class="grid2 four">
-{assign}
-</div>
+<section aria-labelledby="earlier">
+<h2 id="earlier">Earlier career</h2>
+<p class="sub">Grouped into three phases, newest first. Each role shows how it was held: a consultancy engagement, a contract, or nothing where the arrangement is not stated.</p>
+<p class="note"><strong>Finyx Consulting, Associate Consultant, Mar 2009 to Jun 2023.</strong> An associate consultancy relationship that spanned overlapping client assignments.</p>
+{chr(10).join(phases)}
 </section>
 
-<blockquote class="quote serif"><p>His work brings technical teams, business owners and suppliers together around delivery plans, clear responsibilities and practical decisions on risks, dependencies and costs.</p></blockquote>
-
 <section aria-labelledby="creds">
-<h2 id="creds">Credentials and strengths</h2>
+<h2 id="creds">Certifications and professional development</h2>
 <div class="grid2">
-  <article class="card mini"><h3>Certifications</h3><p>Two of the three listed on his profile:</p><p>PRINCE2 Practitioner (PeopleCert)</p><p>ITIL v3 (PeopleCert)</p></article>
-  <article class="card mini"><h3>Top skills</h3><ul class="tags"><li>Project management</li><li>Programme management</li><li>IT project management</li><li>Stakeholder management</li><li>Project recovery</li></ul></article>
-  <article class="card mini"><h3>Where he works</h3><p>Enterprise applications, infrastructure, cloud, cyber security and business separation.</p></article>
+  <article class="card mini"><h3>PRINCE2 Practitioner</h3><p>Achieved</p></article>
+  <article class="card mini"><h3>ITIL v3</h3><p>Achieved</p></article>
+  <article class="card mini"><h3>Microsoft Certified: AI Transformation Leader</h3><p>Exam AB-731 · <span class="inprog">In progress</span></p></article>
 </div>
 </section>
 
 <section class="contact" aria-labelledby="talk">
   <h2 id="talk">Talk to Ben</h2>
-  <p>For a Senior Technology Project Manager, Programme Manager or Technology Delivery Lead role, or a selective consulting assignment.</p>
+  <p>To talk about a technology programme or project, email Ben.</p>
   <p>{" · ".join(contact_links())}</p>
 </section>
 </main>

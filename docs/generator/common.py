@@ -2,7 +2,7 @@ HOST = "https://ben-fung.manager.sovereignweb.site"
 EMAIL = "ben@riskmandate.ai"
 LINKEDIN = None  # waiting for Dinis: take it from the LinkedIn PDF, never guess
 REPO = "https://github.com/SovereignWebsite/Site__Manager__Ben-Fung"
-DESC = "Ben Fung, technology project and programme manager: more than 25 years in technology and about 20 in project management and delivery leadership, told through his career path."
+DESC = "Ben Fung leads technology change across aviation, financial services and government: enterprise migrations, business separation, cybersecurity delivery and operational resilience."
 
 DESIGNS = [
     ("/", "Career path", "path"),
@@ -50,7 +50,7 @@ def head(title, path, style, desc=DESC, card="card-1200x630.jpg", alt=None):
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Ben Fung: technology project and programme manager. More than 25 years in technology, about 20 in project management and delivery leadership.">
+<meta property="og:image:alt" content="Ben Fung: technology programme and project delivery across aviation, financial services and government.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{title}">
 <meta name="twitter:description" content="{desc}">
