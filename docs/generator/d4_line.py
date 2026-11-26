@@ -1,4 +1,5 @@
 from common import *
+from facts import RECENT, PHASES, when
 
 STYLE = r"""
 :root{--bg:#fbfbfd;--paper:#fff;--fg:#16141f;--muted:#4e4a5c;--main:#5b2d8e;--branch:#b34700;--line:#dcd8e6;
@@ -26,9 +27,10 @@ main{max-width:66rem;margin:0 auto;padding:.5rem 1.25rem 2rem}
 .stop::after{content:"";position:absolute;left:.85rem;top:.2rem;width:1.6rem;height:1.6rem;border-radius:50%;background:var(--paper);border:5px solid var(--fg)}
 .stop.term::after{border-radius:4px;width:1.9rem;left:.7rem;background:var(--main);border-color:var(--main)}
 .zone{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700}
-.stop h2{margin:.1rem 0 .1rem;font:800 1.35rem/1.2 "Inter Display",Inter,system-ui,sans-serif;text-transform:uppercase;letter-spacing:.02em}
+.stop h3{margin:.1rem 0 .1rem;font:800 1.35rem/1.2 "Inter Display",Inter,system-ui,sans-serif;text-transform:uppercase;letter-spacing:.02em}
 .stop .role{margin:0 0 .5rem;font-weight:600;color:var(--main)}
 .stop p{margin:0 0 .5rem;color:var(--muted);max-width:40rem}
+.zonehead{font-size:1.3rem;margin:2rem 0 .3rem}.zonenote{color:var(--muted);margin:0 0 1rem}
 .loophead{font-size:1.45rem;margin:0 0 .3rem}.loopnote{color:var(--muted);margin:0 0 .5rem}
 .branch{list-style:none;margin:.9rem 0 .4rem;padding:.9rem 1rem .4rem;border:1px solid var(--line);border-left:8px solid var(--branch);border-radius:8px;background:var(--paper)}
 .branch li{position:relative;padding:0 0 .7rem 1.6rem}
@@ -56,7 +58,7 @@ main{max-width:66rem;margin:0 auto;padding:.5rem 1.25rem 2rem}
   .stop::before{display:none}
   .stop::after{left:auto;right:1rem;top:-1.05rem;width:1.5rem;height:1.5rem;border-width:5px}
   .stop.term{background:var(--main);color:var(--paper);border-color:var(--main)}
-  .stop.term h2,.stop.term .role,.stop.term p,.stop.term .zone{color:var(--paper)}
+  .stop.term .facts li{color:var(--main)}.stop.term h3,.stop.term .role,.stop.term p,.stop.term .zone{color:var(--paper)}
   .stop.term::after{display:none}
 }
 .ticket{display:flex;flex-wrap:wrap;gap:1.2rem;align-items:center;margin:1rem 0 2rem;padding:1.3rem;border-radius:12px;background:var(--main);color:var(--paper)}
@@ -72,104 +74,95 @@ footer{max-width:66rem;margin:0 auto;padding:1rem 1.25rem;color:var(--muted);fon
 """
 
 
+# Stations on the drawn map: (x, label, year, above?) per zone. Every stop below comes from facts.py.
+MAP = [
+    (60, "Westpac", "1997", True), (200, "MF Global", "2007", False),
+    (300, "Direct Line", "2011", True), (390, "Credit Suisse", "2014", False), (470, "HMRC", "2015", True),
+    (550, "Home Office", "2018", False), (630, "Met Police", "2019", True), (710, "Defra", "2022", False),
+    (775, "LSEG", "2022", True), (835, "easyJet", "2023", False), (895, "HX", "2025", True),
+]
+ZONES = [(40, 250, "Zone 1 · 1997 to 2009"), (250, 510, "Zone 2 · 2009 to 2016"), (510, 745, "Zone 3 · 2018 to 2022"), (745, 975, "Zone 4 · 2022 to 2026")]
+ARRW = {"consultancy": "consultancy", "contract": "contract", "unknown": "arrangement not stated"}
+
+
+def svg():
+    z = "".join(f'<text class="zn" x="{a + 6}" y="40">{lab}</text><line x1="{a}" y1="50" x2="{a}" y2="250" style="stroke:var(--line)" stroke-width="2" stroke-dasharray="4 6"/>' for a, b, lab in ZONES)
+    st = []
+    for x, n, y, up in MAP:
+        ny, yy = (112, 132) if up else (196, 216)
+        st.append(f'<circle class="st" cx="{x}" cy="155" r="11" stroke-width="5"/><text class="nm" x="{x}" y="{ny}" text-anchor="middle">{n}</text><text class="zn" x="{x}" y="{yy}" text-anchor="middle">{y}</text>')
+    return f"""<svg class="map" viewBox="0 0 1000 300" role="img" aria-labelledby="map-t">
+  <title id="map-t">Diagram of the Ben Fung Line across four zones, from Westpac in 1997 to the terminus at Gatwick Airport in 2026, with the Finyx Consulting line running alongside from 2009 to 2023. Every stop is listed below.</title>
+  {z}
+  <line class="m" x1="60" y1="155" x2="955" y2="155" stroke-width="12" stroke-linecap="round"/>
+  {''.join(st)}
+  <rect x="937" y="137" width="36" height="36" rx="6" style="fill:var(--main)"/><text class="nm" x="975" y="196" text-anchor="end">Gatwick</text><text class="zn" x="975" y="216" text-anchor="end">2026</text>
+  <path class="b" d="M262 270 H800" stroke-width="8" stroke-linecap="round" fill="none"/>
+  <circle class="bst" cx="262" cy="270" r="8" stroke-width="4"/><circle class="bst" cx="800" cy="270" r="8" stroke-width="4"/>
+  <text class="bn" x="531" y="295" text-anchor="middle">Finyx Consulting, associate · Mar 2009 to Jun 2023</text>
+</svg>"""
+
+
+def stop(o, r, s, e, a, text, hl=None, term=False):
+    facts = f'<ul class="facts">{"".join(f"<li>{h}</li>" for h in hl)}</ul>' if hl else ""
+    how = f" · {ARRW[a]}"
+    return f"""  <li class="stop{' term' if term else ''}">
+    <p class="zone">{when(s, e)}</p>
+    <h3>{o}</h3>
+    <p class="role">{r}{how}</p>
+    <p>{text}</p>{facts}
+  </li>"""
+
+
+TAGS = {"Gatwick Airport": ["&#163;2m budget", "&#163;1m avoided", "&#163;50k a year avoided"],
+        "easyJet": ["Five project managers", "No components deferred", "No unplanned outages"],
+        "London Stock Exchange Group": ["To schedule and budget", "Cyber forensics"],
+        "HX / Hurtigruten Expeditions": ["Separation", "Seaware ERP"]}
+
+
 def page():
-    return head("Ben Fung: line map", "/designs/line-map/", STYLE, "The Ben Fung Line: a technology project and programme manager's career drawn as a transit map, stop by stop.", card="card-line-map.jpg") + f"""{switcher("line")}
+    zones = []
+    recent = [stop(o, r, s, e, a, " ".join([sc.split(" He also assessed")[0]] + [h for h in hl if "avoided" in h]), TAGS.get(o), term=(i == 0)) for i, (o, r, s, e, a, sc, hl) in enumerate(RECENT)]
+    zones.append(("Zone 4 · 2022 to 2026", "Recent roles, the terminus first.", list(reversed(recent))[::-1]))
+    for span, title, intro, rows in PHASES:
+        zones.append((f"{span}: {title}", intro, [stop(o, r, s, e, a, d) for o, r, s, e, a, d in rows]))
+    names = ["Zone 4", "Zone 3", "Zone 2", "Zone 1"]
+    blocks = []
+    for i, (h, intro, stops) in enumerate(zones):
+        hid = f"z{4 - i}"
+        head_ = h if i == 0 else f"{names[i]} · {h}"
+        blocks.append(f'<section aria-labelledby="{hid}"><h2 id="{hid}" class="zonehead">{head_}</h2><p class="zonenote">{intro}</p>\n<ol class="line">\n' + "\n".join(stops) + "\n</ol></section>")
+    return head("Ben Fung: line map", "/designs/line-map/", STYLE, "The Ben Fung Line: his career drawn as a transit map, from Westpac in 1997 to Gatwick Airport in 2026.", card="card-line-map.jpg") + f"""{switcher("line")}
 <main id="main">
 <header class="mast">
   <span class="badge" aria-hidden="true">BF</span>
   <div>
     <h1>The Ben Fung Line</h1>
-    <p class="next-top">Next stop: Senior Technology Project Manager, Programme Manager or Technology Delivery Lead. {mail_button()}</p>
-    <p>Technology project and programme manager. 25+ years in technology, about 20 in project management and delivery leadership. Change here for enterprise applications, cloud, cyber security, business separation and project recovery.</p>
+    <p>Technology programme and project delivery across aviation, financial services and government. Change here for enterprise migrations, business separation, cybersecurity delivery and operational resilience.</p>
+    <p>{mail_button()}</p>
   </div>
 </header>
 
-<svg class="map" viewBox="0 0 1000 270" role="img" aria-labelledby="map-t">
-  <title id="map-t">Diagram of the Ben Fung Line: Background, Finyx Consulting, easyJet, Tessiant for HX, London Gatwick and the next stop, with a separate assignments loop for Direct Line Group, HMRC, Credit Suisse and LSEG. Each stop is described below.</title>
-  <text class="lab" x="40" y="30" fill="currentColor" style="fill:var(--main)">The main line: roles</text>
-  <line class="m" x1="60" y1="95" x2="940" y2="95" stroke-width="12" stroke-linecap="round"/>
-  <g>
-    <circle class="st" cx="60" cy="95" r="12" stroke-width="5"/><text class="nm" x="60" y="70" text-anchor="start">Background</text><text class="zn" x="60" y="130">undated</text>
-    <circle class="st" cx="236" cy="95" r="12" stroke-width="5"/><text class="nm" x="236" y="70" text-anchor="middle">Finyx</text><text class="zn" x="236" y="130" text-anchor="middle">2009 to 2023</text>
-    <circle class="st" cx="412" cy="95" r="12" stroke-width="5"/><text class="nm" x="412" y="70" text-anchor="middle">easyJet</text><text class="zn" x="412" y="130" text-anchor="middle">2023 to 2024</text>
-    <circle class="st" cx="588" cy="95" r="12" stroke-width="5"/><text class="nm" x="588" y="70" text-anchor="middle">Tessiant · HX</text><text class="zn" x="588" y="130" text-anchor="middle">2025</text>
-    <circle class="st" cx="764" cy="95" r="12" stroke-width="5"/><text class="nm" x="764" y="70" text-anchor="middle">Gatwick</text><text class="zn" x="764" y="130" text-anchor="middle">2026</text>
-    <rect x="922" y="77" width="36" height="36" rx="6" style="fill:var(--main)"/><text class="nm" x="958" y="70" text-anchor="end">Next stop</text><text class="zn" x="958" y="130" text-anchor="end">next role</text>
-  </g>
-  <text class="lab" x="140" y="180" style="fill:var(--branch)">The assignments loop: client work, not dated here</text>
-  <path class="b" d="M140 215 H860" stroke-width="8" stroke-linecap="round" fill="none"/>
-  <g>
-    <circle class="bst" cx="200" cy="215" r="9" stroke-width="4"/><text class="bn" x="200" y="248" text-anchor="middle">Direct Line Group</text>
-    <circle class="bst" cx="400" cy="215" r="9" stroke-width="4"/><text class="bn" x="400" y="248" text-anchor="middle">HMRC</text>
-    <circle class="bst" cx="600" cy="215" r="9" stroke-width="4"/><text class="bn" x="600" y="248" text-anchor="middle">Credit Suisse</text>
-    <circle class="bst" cx="800" cy="215" r="9" stroke-width="4"/><text class="bn" x="800" y="248" text-anchor="middle">LSEG (via Finyx)</text>
-  </g>
-</svg>
+{svg()}
 
 <div class="key" role="group" aria-label="Map key">
-  <span><i class="m"></i>The main line: his roles</span>
-  <span><i class="b"></i>The assignments loop: client work, off the main line</span>
+  <span><i class="m"></i>The main line: his roles, zone by zone</span>
+  <span><i class="b"></i>The Finyx Consulting line: an associate relationship, 2009 to 2023</span>
   <span><i class="x"></i>A stop</span>
 </div>
 
-<ol class="line">
-  <li class="stop">
-    <p class="zone">Background · undated</p>
-    <h2>Infrastructure Engineering</h2>
-    <p class="role">What he brings to every stop</p>
-    <p>Ben brings an infrastructure engineering background to delivery leadership, which helps him work effectively with technical specialists.</p>
-  </li>
-  <li class="stop">
-    <p class="zone">Zone 1 · March 2009 to June 2023</p>
-    <h2>Finyx Consulting</h2>
-    <p class="role">Associate Consultant · contract · 14 years 4 months</p>
-    <p>An associate relationship spanning separately listed client assignments, including cyber security project management at London Stock Exchange Group.</p>
-  </li>
-  <li class="stop">
-    <p class="zone">Zone 2 · September 2023 to December 2024</p>
-    <h2>easyJet</h2>
-    <p class="role">Programme Manager · contract · hybrid</p>
-    <p>Enterprise application migrations and data-centre exit, including the Agresso/Unit4 SaaS ERP migration against a fixed exit deadline.</p>
-    <ul class="facts"><li>ERP</li><li>SaaS</li><li>Data-centre exit</li></ul>
-  </li>
-  <li class="stop">
-    <p class="zone">Zone 3 · February to June 2025</p>
-    <h2>Tessiant, for HX</h2>
-    <p class="role">Separation Consultant, Policy and Process · contract</p>
-    <p>Client assignment: HX (Hurtigruten Expeditions). Supported business separation through Seaware ERP transition policies and master-data definition.</p>
-    <ul class="facts"><li>Separation</li><li>Policy</li><li>Master data</li></ul>
-  </li>
-  <li class="stop">
-    <p class="zone">Zone 4 · January to August 2026</p>
-    <h2>London Gatwick</h2>
-    <p class="role">Senior Project Manager · contract · hybrid</p>
-    <p>Recovered master data management delivery with direct responsibility for an approximately £2m budget; finished remediation within budget, with formal operational and service-management acceptance. On a monitoring investment he presented proceed, retender and cancel options; the resulting cancellation avoided £1m of uncommitted forecast implementation spend and £50k in additional annual licensing.</p>
-    <ul class="facts"><li>Project recovery</li><li>Vendor management</li><li>Commercial control</li></ul>
-  </li>
-  <li class="stop term end">
-    <p class="zone">Next stop</p>
-    <h2>Your programme</h2>
-    <p class="role">Senior Technology Project Manager · Programme Manager · Technology Delivery Lead</p>
-    <p>Permanent roles preferred, plus selective consulting assignments. London and one other location, hybrid or remote.</p>
-  </li>
-</ol>
+{chr(10).join(blocks)}
 
 <section aria-labelledby="loop">
-<h2 id="loop" class="loophead">The assignments loop</h2>
-<p class="loopnote">Client work Ben lists beyond the roles on the main line. It runs alongside the line rather than on it: only LSEG is tied to a role (Finyx Consulting), and the dates are on his full profile.</p>
-<ul class="branch">
-            <li><b>Direct Line Group</b><span>Earlier work. </span><span>Separation from RBS</span></li>
-      <li><b>HMRC</b><span>Earlier work. </span><span>The Columbus programme</span></li>
-      <li><b>Credit Suisse</b><span>Earlier work. </span><span>ServiceNow provisioning automation: processing lead time from approximately 15 working days to one, excluding business-owner approval waiting time</span></li>
-      <li><b>London Stock Exchange Group</b><span>A recent assignment, through Finyx Consulting. Cyber security Senior Project Manager: security orchestration and cyber forensic capabilities</span></li>
-    </ul>
+<h2 id="loop" class="loophead">The Finyx Consulting line</h2>
+<p class="loopnote">Associate Consultant, Finyx Consulting, Mar 2009 to Jun 2023: an associate consultancy relationship that ran alongside the main line, spanning overlapping client assignments.</p>
 </section>
 
 <section class="ticket" aria-labelledby="travel">
-  <img src="/assets/img/ben-fung-400.jpg" width="400" height="400" alt="Ben Fung">
+  <img src="/assets/img/ben-fung-400.jpg" width="400" height="400" alt="Ben Fung, smiling, in a dark jacket and striped shirt">
   <div>
     <h2 id="travel">Travel information</h2>
-    <p>PRINCE2 Practitioner and ITIL v3 (PeopleCert).</p>
+    <p>PRINCE2 Practitioner and ITIL v3, achieved. Microsoft Certified: AI Transformation Leader (AB-731), in progress.</p>
     <p>{mail_button()}</p>
   </div>
 </section>

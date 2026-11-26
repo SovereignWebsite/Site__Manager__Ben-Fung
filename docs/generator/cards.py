@@ -56,12 +56,12 @@ fb=ImageFont.truetype(F+'InterDisplay-Bold.otf',84); fn=ImageFont.truetype(F+'In
 d.ellipse((70,60,150,140),outline=P,width=14); d.text((110,100),'BF',font=fn,fill=(22,20,31),anchor='mm')
 d.text((180,55),'The Ben Fung Line',font=fb,fill=(22,20,31))
 d.line((90,360,1110,360),fill=P,width=16)
-st=[(90,'BACKGROUND','undated'),(290,'FINYX','2009'),(490,'EASYJET','2023'),(690,'TESSIANT · HX','2025'),(890,'GATWICK','2026')]
+st=[(90,'WESTPAC','1997'),(300,'DIRECT LINE','2011'),(510,'HOME OFFICE','2018'),(720,'EASYJET','2023')]
 for x,n,z in st:
     d.ellipse((x-17,343,x+17,377),fill=(255,255,255),outline=(22,20,31),width=7); an='ls' if x==90 else 'ms'; xo=x-17 if x==90 else x; d.text((xo,320),n,font=fn,fill=(22,20,31),anchor=an); d.text((xo,410),z.upper(),font=fz,fill=(78,74,92),anchor=an)
-d.rounded_rectangle((1080,334,1132,386),8,fill=P); d.text((1110,320),'NEXT',font=fn,fill=(22,20,31),anchor='ms')
-d.line((200,500,1000,500),fill=O,width=10)
-for x in (260,460,660,860): d.ellipse((x-12,488,x+12,512),fill=(255,255,255),outline=O,width=5)
-d.text((200,470),'THE ASSIGNMENTS LOOP',font=fz,fill=O)
+d.rounded_rectangle((1084,334,1136,386),8,fill=P); d.text((1136,320),'GATWICK',font=fn,fill=(22,20,31),anchor='rs'); d.text((1136,410),'2026',font=fz,fill=(78,74,92),anchor='rs')
+d.line((230,500,860,500),fill=O,width=10)
+for x in (230,860): d.ellipse((x-12,488,x+12,512),fill=(255,255,255),outline=O,width=5)
+d.text((230,470),'FINYX CONSULTING · 2009 TO 2023',font=fz,fill=O)
 circ(im,120,(1010,55),ring=P)
 save(im,'card-line-map.jpg')

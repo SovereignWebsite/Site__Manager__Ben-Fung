@@ -27,7 +27,7 @@ CARDS = [
  ("/", "s1", "Ben Fung", "1. Career path", "What he does, six selected outcomes, his recent roles in full and his earlier career in three phases."),
  ("/designs/departures/", "s2", "DEPARTURES", "2. Departures board", "Selected roles as departures on a split-flap board, newest first, with a boarding pass to email him."),
  ("/designs/programme-plan/", "s3", "<span>Plan on a page</span>", "3. Programme plan", "A highlight report: every role on a Gantt chart from 1997 to 2026, the measured results and the recommendation he made at Gatwick."),
- ("/designs/line-map/", "s4", "<span>The Ben Fung Line</span>", "4. Line map", "His career as a transit line, with an interchange for the client assignments loop."),
+ ("/designs/line-map/", "s4", "<span>The Ben Fung Line</span>", "4. Line map", "His career as a transit line in four zones, from Westpac in 1997 to the Gatwick terminus, with Finyx Consulting running alongside."),
 ]
 def page():
     TH = {"s1":"career-path","s2":"departures","s3":"programme-plan","s4":"line-map"}

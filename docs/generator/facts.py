@@ -1,8 +1,9 @@
 """Ben Fung's career facts, the one source every design draws on.
 
 From Ben's Public Professional Profile v1.0 (his own JSON, 26 Nov 2026; not published), with his corrections
-given in keeper.ben's session the same day: at Gatwick the project was Mobile Device Management (MDM), not
-master data management; he was responsible for a 2m pound budget on it; through his recommendation Gatwick
+given in keeper.ben's session the same day: at Gatwick the project was a mobile device refresh, including
+Mobile Device Management (MDM) enrolment, device profiles and correcting the asset management database records
+(not master data management); he was responsible for a 2m pound budget on it; through his recommendation Gatwick
 avoided 1m pounds of implementation spend; and (Ben, later the same day) his recommendation to cancel the
 infrastructure monitoring project avoided a 50k pounds a year increase in licensing costs. Keep every line traceable to those; never add a fact here without a source.
 """
@@ -25,8 +26,8 @@ def arr(a):
 # Every line below is taken from Ben's Public Professional Profile v1.0 (career facts), wording kept close.
 RECENT = [
     ("Gatwick Airport", "Senior Project Manager", "2026-01", "2026-08", "consultancy",
-     "Led Mobile Device Management (MDM) data quality remediation through formal service-management acceptance, responsible for a &#163;2m budget on the MDM project, and assessed options for consolidating monitoring tools.",
-     ["Completed the MDM remediation within budget and secured formal operational acceptance.",
+     "Led a mobile device refresh project through formal service-management acceptance, responsible for its &#163;2m budget. It included Mobile Device Management (MDM) enrolment, creating the device profiles and correcting the asset management database records. He also assessed options for consolidating infrastructure monitoring tools.",
+     ["Completed the correction of the asset management records within budget and secured formal operational acceptance.",
       "Managed monthly cost forecasts, supplier invoice approvals and supplier handover.",
       "Presented the options for consolidating infrastructure monitoring tools and recommended cancelling the project. Through his recommendation, Gatwick avoided &#163;1m of implementation spend and an increase of &#163;50k a year in licensing costs.",
       "Improved visibility of upcoming deployments so teams could plan resources earlier."]),
@@ -78,7 +79,7 @@ PHASES = [
 
 OUTCOMES = [
     ("Commercial judgement", "&#163;1m implementation spend avoided",
-     "Assessing a proposed project to consolidate infrastructure monitoring tools, he recommended cancelling it. Through his recommendation, Gatwick avoided &#163;1m of implementation spend and an increase of &#163;50k a year in licensing costs. On the Mobile Device Management (MDM) project, where he was responsible for a &#163;2m budget, he completed the remediation within budget and secured formal operational acceptance.",
+     "Assessing a proposed project to consolidate infrastructure monitoring tools, he recommended cancelling it. Through his recommendation, Gatwick avoided &#163;1m of implementation spend and an increase of &#163;50k a year in licensing costs. He also led a mobile device refresh with a &#163;2m budget, including Mobile Device Management (MDM) enrolment and device profiles, and completed the correction of the asset management records within budget, with formal operational acceptance.",
      None, "Gatwick Airport · Senior Project Manager · 2026"),
     ("Deadline delivery", "No components deferred",
      "Completed the Unit4 ERP migration to SaaS and its required integrations by the fixed data-centre exit deadline. Across the applications under his accountability, migrations had no unplanned outages.",
