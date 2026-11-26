@@ -1,7 +1,7 @@
 import os, importlib
 R = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "site")
 OUT = {"d1_path": "index.html", "d2_departures": "designs/departures/index.html", "d3_plan": "designs/programme-plan/index.html",
-       "d4_line": "designs/line-map/index.html", "d5_broadsheet": "designs/broadsheet/index.html", "gallery": "designs/index.html"}
+       "d4_line": "designs/line-map/index.html", "gallery": "designs/index.html"}
 for mod, path in OUT.items():
     p = os.path.join(R, path); os.makedirs(os.path.dirname(p), exist_ok=True)
     open(p, "w").write(importlib.import_module(mod).page()); print("wrote", path)

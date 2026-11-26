@@ -24,19 +24,18 @@ footer{max-width:70rem;margin:0 auto;padding:1rem 1.25rem;color:var(--muted);fon
 footer a{color:var(--fg)}
 """
 CARDS = [
- ("/", "s1", "Ben Fung", "1. Career path", "An editorial timeline of his roles from Finyx Consulting to London Gatwick, with the numbers that matter."),
- ("/designs/departures/", "s2", "DEPARTURES", "2. Departures board", "Each role is a departure on a split-flap board. The top row is the role he wants next."),
- ("/designs/programme-plan/", "s3", "<span>Plan on a page</span>", "3. Programme plan", "A highlight report: a Gantt chart of 2009 to 2026, the figures from his profile and the options he presented at Gatwick."),
+ ("/", "s1", "Ben Fung", "1. Career path", "What he does, six selected outcomes, his recent roles in full and his earlier career in three phases."),
+ ("/designs/departures/", "s2", "DEPARTURES", "2. Departures board", "Selected roles as departures on a split-flap board, newest first, with a boarding pass to email him."),
+ ("/designs/programme-plan/", "s3", "<span>Plan on a page</span>", "3. Programme plan", "A highlight report: every role on a Gantt chart from 1997 to 2026, the measured results and the recommendation he made at Gatwick."),
  ("/designs/line-map/", "s4", "<span>The Ben Fung Line</span>", "4. Line map", "His career as a transit line, with an interchange for the client assignments loop."),
- ("/designs/broadsheet/", "s5", "The Delivery Record", "5. Broadsheet", "A newspaper front page: the profile, the numbers and a classified for the next role."),
 ]
 def page():
-    TH = {"s1":"career-path","s2":"departures","s3":"programme-plan","s4":"line-map","s5":"broadsheet"}
+    TH = {"s1":"career-path","s2":"departures","s3":"programme-plan","s4":"line-map"}
     cards = "\n".join(f'<li><a href="{h}"><img class="shot" src="/assets/designs/{TH[c]}.jpg" width="640" height="400" alt="" loading="lazy"><div class="txt"><h2>{t}</h2><p>{d}</p></div></a></li>' for h,c,art,t,d in CARDS)
-    return head("Ben Fung: five designs", "/designs/", STYLE, "One career, five designs: the same facts about Ben Fung, technology project and programme manager, told five ways.") + f"""{switcher("")}
+    return head("Ben Fung: four designs", "/designs/", STYLE, "One career, four designs: the same facts about Ben Fung, technology programme and project delivery, told four ways.") + f"""{switcher("")}
 <main id="main">
-<h1>One career, five designs</h1>
-<p class="sub">The same facts about Ben Fung, told five very different ways. Each one is a full page; pick the one that fits the reader.</p>
+<h1>One career, four designs</h1>
+<p class="sub">The same facts about Ben Fung, told four very different ways. Each one is a full page; pick the one that fits the reader.</p>
 <ul class="cards">
 {cards}
 </ul>

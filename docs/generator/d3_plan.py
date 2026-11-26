@@ -1,4 +1,6 @@
 from common import *
+from facts import RECENT, PHASES, when
+import re
 
 STYLE = r"""
 :root{--bg:#eef1f5;--paper:#fff;--fg:#14213d;--muted:#475569;--line:#d5dbe4;--grid:#e6eaf0;--blue:#1d4ed8;--teal:#2f7f86;--violet:#334e7d;--orange:#4a6fa5;--now:#116331;
@@ -26,17 +28,18 @@ h2{font-size:1.05rem;margin:0 0 1rem;display:flex;align-items:center;gap:.6rem}
 h2::before{content:"";width:.6rem;height:.6rem;border-radius:2px;background:var(--blue)}
 .gantt{display:grid;gap:.5rem;font-size:.82rem}
 .grow{display:grid;grid-template-columns:17.5rem 1fr;align-items:center;gap:.8rem}
-.track{display:grid;grid-template-columns:repeat(216,minmax(0,1fr));position:relative;min-height:1.9rem;
-  background:repeating-linear-gradient(90deg,var(--grid) 0 1px,transparent 1px calc(100%/18));border-radius:4px}
+.track{display:grid;grid-template-columns:repeat(360,minmax(0,1fr));position:relative;min-height:1.9rem;
+  background:repeating-linear-gradient(90deg,var(--grid) 0 1px,transparent 1px calc(100%/30));border-radius:4px}
 .yrs{min-height:0;background:none}
 .yr{font-size:.8rem;color:var(--muted);border-left:1px solid var(--line);padding:0 0 .2rem .2rem;font-variant-numeric:tabular-nums;grid-row:1}
 .lbl{font-weight:600;line-height:1.25}
 .lbl small{display:block;font-weight:400;color:var(--muted);font-size:.8rem}
 .bar{grid-row:1;grid-column:var(--s)/var(--e);align-self:center;height:1.7rem;border-radius:5px;min-width:14px;color:#fff;font-weight:600;font-size:.75rem;display:flex;align-items:center;padding:0 .5rem;white-space:nowrap;overflow:hidden;min-width:6px}
 @media (prefers-color-scheme:dark){.bar{color:#0b1220}}
-@media (max-width:40rem){.grow{grid-template-columns:1fr;gap:.25rem}.grow.head .lbl{display:none}.yr.odd{visibility:hidden}.yr{font-size:.65rem;padding-left:.1rem}.bar span{display:none}}
+.yr.odd{visibility:hidden}.grow.phase-h{margin-top:.6rem}.grow.phase-h .lbl{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+@media (max-width:40rem){.grow{grid-template-columns:1fr;gap:.25rem}.grow.head .lbl{display:none}.yr.m5{visibility:hidden}.yr{font-size:.65rem;padding-left:.1rem}.bar span{display:none}}
 .bnext{background:repeating-linear-gradient(45deg,var(--now) 0 6px,transparent 6px 10px);border:2px solid var(--now)}
-.b1{background:var(--violet)}.b2{background:var(--orange)}.b3{background:var(--teal)}.b4{background:var(--blue)}
+.bfin{background:repeating-linear-gradient(45deg,var(--grid) 0 6px,transparent 6px 10px);border:2px solid var(--violet);color:var(--fg)}.b1{background:var(--violet)}.b2{background:var(--orange)}.b3{background:var(--teal)}.b4{background:var(--blue)}
 @media (prefers-color-scheme:dark){}
 .note{color:var(--muted);font-size:.85rem;margin:.9rem 0 0}
 .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(20rem,1fr));gap:1.25rem}
@@ -59,69 +62,87 @@ footer{max-width:72rem;margin:0 auto;padding:1rem;color:var(--muted);font-size:.
 @media (max-width:40rem){td.num{white-space:normal}th,td{padding:.5rem .35rem}.sheet{padding:1rem}.titlebar{grid-template-columns:auto 1fr}.status{grid-column:1/-1;text-align:left}}
 """
 
-BARS = [  # label, sub, start (year, month), end (year, month inclusive), cls, text
-    ("Associate Consultant", "Finyx Consulting", (2009, 3), (2023, 6), "b1", "14 yrs 4 mos"),
-    ("Programme Manager", "easyJet", (2023, 9), (2024, 12), "b2", ""),
-    ("Separation Consultant", "Tessiant, client HX", (2025, 2), (2025, 6), "b3", ""),
-    ("Senior Project Manager", "London Gatwick", (2026, 1), (2026, 8), "b4", ""),
+START = 1997
+
+
+def col(ym):
+    y, m = map(int, ym.split("-"))
+    return 2 + (y - START) * 12 + (m - 1)
+
+
+def end_col(ym):
+    return col(ym) + 1
+
+
+def plain(s):
+    return re.sub(r"<small>.*?</small>", "", s)
+
+
+# Oldest first, as a plan reads; each phase gets its own colour. Facts from facts.py only.
+GROUPS = [
+    ("1997 to 2009: infrastructure engineering to project leadership", "b1", list(reversed(PHASES[2][3]))),
+    ("2009 to 2016: programme and project management", "b2", list(reversed(PHASES[1][3]))),
+    ("2018 to 2022: security, procurement and resilience consulting", "b3", list(reversed(PHASES[0][3]))),
+    ("2022 to 2026: recent roles", "b4", [(o, r, s, e, a, sc) for o, r, s, e, a, sc, _ in reversed(RECENT)]),
 ]
-
-
-def col(y, m):
-    return 2 + (y - 2009) * 12 + (m - 1)
-
-
-MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
+ARRW = {"consultancy": "consultancy", "contract": "contract", "unknown": "arrangement not stated"}
 
 
 def page():
-    years = "".join(f'<div class="yr{' odd' if y % 2 == 0 else ''}" style="grid-column:{col(y,1)-1}/span 12">{y}</div>' for y in range(2009, 2027))
+    years = "".join(f'<div class="yr{" odd" if y % 2 else ""}{"" if y % 5 == 0 else " m5"}" style="grid-column:{col(f"{y}-01")-1}/span 12">{y}</div>' for y in range(START, 2027))
     rows = [f'<div class="grow head" aria-hidden="true"><div class="lbl"></div><div class="track yrs">{years}</div></div>']
-    for l, s_, a, b, c, t in BARS:
-        when = f"{MON[a[1]-1]} {a[0]} to {MON[b[1]-1]} {b[0]}" if c != "bnext" else "as his profile says"
-        rows.append(f'<div class="grow"><div class="lbl">{l}<small>{s_} · {when}</small></div><div class="track" aria-hidden="true"><div class="bar {c}" style="--s:{col(*a)-1};--e:{col(*b)}"><span>{t}</span></div></div></div>')
+    for title, c, roles in GROUPS:
+        rows.append(f'<div class="grow phase-h"><div class="lbl">{title}</div><div></div></div>')
+        if c == "b2":
+            rows.append(f'<div class="grow"><div class="lbl">Associate Consultant<small>Finyx Consulting · Mar 2009 to Jun 2023 · an associate relationship spanning overlapping client assignments</small></div><div class="track" aria-hidden="true"><div class="bar bfin" style="--s:{col("2009-03")-1};--e:{end_col("2023-06")-1}"><span>Finyx Consulting, associate</span></div></div></div>')
+        for o, r, s, e, a, _ in roles:
+            rows.append(f'<div class="grow"><div class="lbl">{plain(r)}<small>{o} · {when(s, e)} · {ARRW[a]}</small></div><div class="track" aria-hidden="true"><div class="bar {c}" style="--s:{col(s)-1};--e:{end_col(e)-1}"></div></div></div>')
     gantt = "\n".join(rows)
-    return head("Ben Fung: programme plan", "/designs/programme-plan/", STYLE, "Ben Fung's career as a programme highlight report: a plan on a page from 2009 to 2026, the figures from his profile and what he wants next.", card="card-programme-plan.jpg") + f"""{switcher("plan")}
+    return head("Ben Fung: programme plan", "/designs/programme-plan/", STYLE, "Ben Fung's career as a programme highlight report: every role on a plan from 1997 to 2026, the measured results and the recommendation he made at Gatwick.", card="card-programme-plan.jpg") + f"""{switcher("plan")}
 <main id="main">
 <header class="sheet titlebar">
-  <img src="/assets/img/ben-fung-400.jpg" width="400" height="400" alt="Ben Fung">
+  <img src="/assets/img/ben-fung-400.jpg" width="400" height="400" alt="Ben Fung, smiling, in a dark jacket and striped shirt">
   <div>
     <p class="doc">Career programme · highlight report</p>
     <h1>Ben Fung</h1>
-    <p>Technology project and programme manager. Enterprise applications, cloud and cyber security; business separation and project recovery.</p>
+    <p>Technology programme and project delivery across aviation, financial services and government: enterprise migrations, business separation, cybersecurity delivery and operational resilience.</p>
   </div>
-  <div class="status"><span class="pill">Next role</span><span>London and one other location · hybrid or remote</span>{mail_button()}</div>
+  <div class="status"><span class="pill">Contact</span>{mail_button()}</div>
 </header>
 
 <section class="sheet" aria-labelledby="summary">
   <h2 id="summary">Programme summary</h2>
   <dl class="kv">
-    <div><dt>In technology</dt><dd>25+ yrs</dd></div>
-    <div><dt>Delivery leadership</dt><dd>~20 yrs</dd></div>
-    <div><dt>Project budget, Gatwick</dt><dd>~£2m</dd></div>
-    <div><dt>Forecast spend avoided</dt><dd>£1m</dd></div>
-    <div><dt>Extra licensing avoided</dt><dd>£50k/yr</dd></div>
+    <div><dt>In technology</dt><dd>Since 1997</dd></div>
+    <div><dt>Gatwick MDM budget</dt><dd>&#163;2m</dd></div>
+    <div><dt>Spend avoided, Gatwick</dt><dd>&#163;1m</dd></div>
+    <div><dt>Licensing increase avoided</dt><dd>&#163;50k a year</dd></div>
+    <div><dt>P1 defects at go-live, HMRC</dt><dd>0</dd></div>
   </dl>
 </section>
 
 <section class="sheet" aria-labelledby="plan">
-  <h2 id="plan">Plan on a page, 2009 to 2026</h2>
+  <h2 id="plan">Plan on a page, 1997 to 2026</h2>
   <div class="gantt">
 {gantt}
   </div>
-  <p class="note">Bars run from the first to the last month of each role as listed on his profile. Other client assignments (Direct Line Group, HMRC, Credit Suisse, LSEG) are listed below without dates.</p>
+  <p class="note">Each bar runs from the first to the last month of a role, as given. Bars that overlap are engagements that ran at the same time. The striped bar is his associate relationship with Finyx Consulting.</p>
 </section>
 
 <div class="cols">
 <section class="sheet" aria-labelledby="benefits">
-  <h2 id="benefits">Figures from his profile</h2>
+  <h2 id="benefits">Measured results</h2>
   <table>
     <thead><tr><th scope="col">Engagement</th><th scope="col">Result</th><th scope="col">Measure</th></tr></thead>
     <tbody>
-      <tr><td>London Gatwick</td><td>Uncommitted forecast implementation spend avoided</td><td class="num">£1m</td></tr>
-      <tr><td>London Gatwick</td><td>Additional annual licensing avoided</td><td class="num">£50k a year</td></tr>
-      <tr><td>London Gatwick</td><td>Remediation completed within budget, with formal operational and service-management acceptance</td><td class="num">Within budget</td></tr>
-      <tr><td>Credit Suisse</td><td>ServiceNow provisioning automation: measured processing lead time, excluding business-owner approval waiting time</td><td class="num">~15 → 1 working days</td></tr>
+      <tr><td>Gatwick Airport</td><td>Implementation spend avoided through his recommendation to cancel the infrastructure monitoring project</td><td class="num">&#163;1m</td></tr>
+      <tr><td>Gatwick Airport</td><td>Increase in licensing costs avoided through the same recommendation</td><td class="num">&#163;50k a year</td></tr>
+      <tr><td>Gatwick Airport</td><td>Mobile Device Management project budget he was responsible for; remediation completed within budget and formally accepted</td><td class="num">&#163;2m</td></tr>
+      <tr><td>easyJet</td><td>Unit4 ERP migration and required integrations by the fixed data-centre exit deadline, no components deferred</td><td class="num">On deadline</td></tr>
+      <tr><td>easyJet</td><td>Servers decommissioned by the wider data-centre exit programme</td><td class="num">~150</td></tr>
+      <tr><td>HMRC</td><td>Priority-one defects at go-live and through stabilisation, on his assigned migration delivery</td><td class="num">0</td></tr>
+      <tr><td>Credit Suisse</td><td>Measured virtual-server provisioning processing time, excluding time waiting for business-owner approval</td><td class="num">~15 &#8594; 1 working days</td></tr>
+      <tr><td>MF Global</td><td>Servers decommissioned by the VMware virtualisation project he led</td><td class="num">200+</td></tr>
     </tbody>
   </table>
 </section>
@@ -129,32 +150,33 @@ def page():
 <section class="sheet" aria-labelledby="workstreams">
   <h2 id="workstreams">Workstreams</h2>
   <ul class="ws">
-    <li><b>01</b><div><strong>Project recovery</strong><span>Rebasing the plan with stakeholders while keeping scheduled deployments (London Gatwick).</span></div></li>
-    <li><b>02</b><div><strong>Business separation</strong><span>Direct Line Group's separation from RBS; for client HX, Seaware ERP transition policies and master-data definition (Tessiant).</span></div></li>
-    <li><b>03</b><div><strong>Enterprise applications and data-centre exit</strong><span>easyJet's Agresso/Unit4 SaaS ERP migration against a fixed exit deadline.</span></div></li>
-    <li><b>04</b><div><strong>Cyber security</strong><span>Security orchestration and cyber forensic capabilities at London Stock Exchange Group.</span></div></li>
-    <li><b>05</b><div><strong>Programmes and automation</strong><span>HMRC's Columbus programme; ServiceNow provisioning automation at Credit Suisse.</span></div></li>
+    <li><b>01</b><div><strong>Enterprise migration</strong><span>easyJet's Unit4 ERP move to SaaS for the data-centre exit; HMRC's Columbus programme.</span></div></li>
+    <li><b>02</b><div><strong>Business separation</strong><span>HX's Seaware ERP transition; Direct Line Group's separation from RBS; resilience for M&amp;G's separation from Prudential.</span></div></li>
+    <li><b>03</b><div><strong>Cyber security and operating models</strong><span>Security orchestration and forensics at London Stock Exchange Group; the security target operating model for HMRC / Home Office.</span></div></li>
+    <li><b>04</b><div><strong>Procurement and evaluation</strong><span>Scoring and evaluation for the Metropolitan Police Service and the National Crime Agency.</span></div></li>
+    <li><b>05</b><div><strong>Commercial control and automation</strong><span>A &#163;2m budget at Gatwick; ServiceNow automation and portfolio scoring at Credit Suisse.</span></div></li>
+    <li><b>06</b><div><strong>Infrastructure</strong><span>From server support at Westpac to leading VMware virtualisation at MF Global.</span></div></li>
   </ul>
 </section>
 </div>
 
 <div class="cols">
 <section class="sheet" aria-labelledby="decision">
-  <h2 id="decision">Options presented: one example</h2>
+  <h2 id="decision">Recommendation made: one example</h2>
   <div class="decision">
-    <p>At London Gatwick, Ben assessed a proposed monitoring consolidation investment and presented three options.</p>
-    <div class="opts" role="list"><span role="listitem">Proceed</span><span role="listitem">Retender</span><span role="listitem" class="chosen">Cancel (the outcome)</span></div>
-    <p>The resulting cancellation avoided £1m of uncommitted forecast implementation expenditure and £50k in additional annual licensing costs.</p>
+    <p>At Gatwick Airport, Ben assessed a proposed project to consolidate infrastructure monitoring tools and presented the options.</p>
+    <div class="opts" role="list"><span role="listitem">Proceed</span><span role="listitem" class="chosen">Cancel (his recommendation)</span></div>
+    <p>Through his recommendation, Gatwick avoided &#163;1m of implementation spend and an increase of &#163;50k a year in licensing costs.</p>
   </div>
 </section>
 
 <section class="sheet" aria-labelledby="resourcing">
-  <h2 id="resourcing">Resourcing request</h2>
+  <h2 id="resourcing">Certifications and development</h2>
   <table>
     <tbody>
-      <tr><th scope="row">Roles</th><td>Senior Technology Project Manager · Programme Manager · Technology Delivery Lead</td></tr>
-      <tr><th scope="row">Basis</th><td>Permanent preferred; selective consulting assignments</td></tr>
-      <tr><th scope="row">Certified</th><td>PRINCE2 Practitioner · ITIL v3 (PeopleCert)</td></tr>
+      <tr><th scope="row">PRINCE2 Practitioner</th><td>Achieved</td></tr>
+      <tr><th scope="row">ITIL v3</th><td>Achieved</td></tr>
+      <tr><th scope="row">Microsoft Certified: AI Transformation Leader (AB-731)</th><td>In progress</td></tr>
       <tr><th scope="row">Contact</th><td>{mail_button()}</td></tr>
     </tbody>
   </table>

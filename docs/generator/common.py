@@ -9,7 +9,6 @@ DESIGNS = [
     ("/designs/departures/", "Departures board", "departures"),
     ("/designs/programme-plan/", "Programme plan", "plan"),
     ("/designs/line-map/", "Line map", "line"),
-    ("/designs/broadsheet/", "Broadsheet", "broadsheet"),
 ]
 
 FAMILY = """<details class="family-credit">
@@ -67,18 +66,18 @@ def head(title, path, style, desc=DESC, card="card-1200x630.jpg", alt=None):
 """
 
 
-THUMB = {"path": "career-path", "departures": "departures", "plan": "programme-plan", "line": "line-map", "broadsheet": "broadsheet"}
+THUMB = {"path": "career-path", "departures": "departures", "plan": "programme-plan", "line": "line-map"}
 
 
 def switcher(current):
     names = {k: n for _, n, k in DESIGNS}
     here = f'<span class="here">this is {names[current]}</span>' if current in names else ""
-    out = ['<nav class="designs" aria-label="Five designs of this page">', '<details>', f'  <summary><span class="lbl">Five designs</span>{here}</summary>', '  <ul class="dcards">']
+    out = ['<nav class="designs" aria-label="Four designs of this page">', '<details>', f'  <summary><span class="lbl">Four designs</span>{here}</summary>', '  <ul class="dcards">']
     for i, (href, name, key) in enumerate(DESIGNS, 1):
         cur = ' aria-current="page"' if key == current else ""
         out.append(f'    <li><a href="{href}"{cur}><img src="/assets/designs/{THUMB[key]}-phone.jpg" width="300" height="400" alt=""><span>{i}. {name}</span></a></li>')
     out.append('  </ul>')
-    out.append('  <p class="all"><a href="/designs/">See all five side by side</a></p>')
+    out.append('  <p class="all"><a href="/designs/">See all four side by side</a></p>')
     out.append('</details>')
     out.append("</nav>")
     return "\n".join(out)
